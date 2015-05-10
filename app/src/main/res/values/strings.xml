@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--TODO: Sprawdzic czy uzywane sa te nazwy stringow-->
+    <!--Prawdopodobnie niepotrzebne stringi-->
+    <string name="hello_world">Hello world!</string>
+    <string name="welcome">Wprowadź dane logowania</string>
+    <string name="username">nazwa użytkownika</string>
+    <string name="password">hasło</string>
+    <string name="action_settings">Settings</string>
+    <string name="refresh">Odśwież</string>
+    <string name="phoneNumber">numer telefonu</string>
+    <string name="dial">Zadzwoń</string>
+    <string name="uernameTooShort">Nazwa użytkownika musi się składać z przynajmniej 3 znaków</string>
+    <string name="welcomeWithName">Cześć %s!</string>
+
+
+
+    <!--Aktualnie uzywane nazwy stringow-->
+    <string name="app_name">Studentizer</string>
+    <string name="app_name_sub">Poczuj się jak student!</string>
+
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_timetable">Rozkład jazdy SKM</string>
+    <string name="title_todo">Lista TO DO</string>
+    <string name="title_wallet">Portfel</string>
+    <string name="drawer_open">Otwórz</string>
+    <string name="drawer_close">Zamknij</string>
+
+    <!--Trzeba podmienić facebook_app_id-->
+    <!--Najpierw trzeba wygenerowac apliakcje na FB. Stamtad bedzie mozna przekleic jej numer-->
+    <string name="facebook_app_id">1553764854896574</string>
+</resources>

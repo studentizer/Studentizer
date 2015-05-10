@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="pl.edu.ug.aib.studentizerApp.fragment.DashboardFragment_"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <fragment
+        android:id="@+id/aboutAppFragment"
+        android:name="pl.edu.ug.aib.studentizerApp.fragment.TimetableFragment_"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <fragment
+        android:id="@+id/todoFragment"
+        android:name="pl.edu.ug.aib.studentizerApp.fragment.TODOFragment_"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <fragment
+        android:id="@+id/walletFragment"
+        android:name="pl.edu.ug.aib.studentizerApp.fragment.WalletFragment_"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+</LinearLayout>
