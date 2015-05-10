@@ -31,6 +31,8 @@ public class DrawerHandler implements ListView.OnItemClickListener {
     @Bean
     DrawerListAdapter drawerListAdapter;
 
+    //test konraddroptable
+
     @ViewById(R.id.drawer_layout)
     DrawerLayout drawerLayout;
 
