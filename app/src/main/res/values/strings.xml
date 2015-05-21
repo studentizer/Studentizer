@@ -29,4 +29,5 @@
     <!--Trzeba podmienić facebook_app_id-->
     <!--Najpierw trzeba wygenerowac apliakcje na FB. Stamtad bedzie mozna przekleic jej numer-->
     <string name="facebook_app_id">1553764854896574</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>
