@@ -6,11 +6,29 @@
     android:layout_height="fill_parent"
 >
 
+    <EditText
+        android:id="@+id/startId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="idStart"
+        android:inputType="number"
+        />
+    <EditText
+        android:id="@+id/endId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/startId"
+        android:hint="idEnd"
+        android:inputType="number"
+        />
+
         <Button
             android:id="@+id/refreshBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Refresh"
+            android:layout_below="@id/endId"
+            android:layout_marginTop="10dp"
             />
 
         <TextView

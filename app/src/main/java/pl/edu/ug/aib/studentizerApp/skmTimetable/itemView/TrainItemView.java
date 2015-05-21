@@ -25,12 +25,10 @@ public class TrainItemView extends RelativeLayout {
 //            "Tip": "W1"
 
     //use fields from list_train layout
-    @ViewById
-    TextView idTimetable;
-    @ViewById
-    TextView idStart;
-    @ViewById
-    TextView idEnd;
+//    @ViewById
+//    TextView idStart;
+//    @ViewById
+//    TextView idEnd;
     @ViewById
     TextView timetableDate;
     @ViewById
@@ -46,13 +44,12 @@ public class TrainItemView extends RelativeLayout {
 
     public void bind(Train train){
         //fill textviews
-        idTimetable.setText(train.idTimetable);
-        idStart.setText(train.idStart);
-        idEnd.setText(train.idEnd);
-        timetableDate.setText(train.timetableDate);
-        hour.setText(train.hour);
-        minute.setText(train.minute);
-        tip.setText(train.tip);
+//        idStart.setText("idStart: " + Integer.toString(train.idStart));
+//        idEnd.setText(" idEnd: " + Integer.toString(train.idEnd));
+        timetableDate.setText(train.timetableDate.toString());
+        hour.setText(train.hour.toString());
+        minute.setText(train.minute.toString());
+        tip.setText("  " + train.tip.toString());
     }
 
 }

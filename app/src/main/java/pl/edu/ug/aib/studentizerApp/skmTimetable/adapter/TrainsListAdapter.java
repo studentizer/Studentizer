@@ -26,7 +26,7 @@ public class TrainsListAdapter  extends BaseAdapter {
     @RootContext
     Context context;
 
-    List<Train> trains = new ArrayList<Train>();
+    List<Train> trainsTimetable = new ArrayList<Train>();
 
     public TrainsListAdapter(){
 
@@ -34,12 +34,12 @@ public class TrainsListAdapter  extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return trains.size();
+        return trainsTimetable.size();
     }
 
     @Override
     public Train getItem(int i) {
-        return trains.get(i);
+        return trainsTimetable.get(i);
     }
 
     @Override
@@ -64,8 +64,8 @@ public class TrainsListAdapter  extends BaseAdapter {
 
     public void update(TrainsList trains) {
         //TODO: check it, probably sth went wrong
-        trains.records.clear();
-        trains.records.addAll(trains.records);
+        trainsTimetable.clear();
+        trainsTimetable.addAll(trains.records);
         this.notifyDataSetChanged();
     }
 }

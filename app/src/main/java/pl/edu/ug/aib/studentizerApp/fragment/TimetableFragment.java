@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,12 +46,12 @@ public class TimetableFragment extends ActionBarActivity {
     //listview from fragment_timetable
     @ViewById
     ListView listTrain;
-
     @ViewById
     Button refreshBtn;
-
     @ViewById
-    TextView tip;
+    EditText startId;
+    @ViewById
+    EditText endId;
 
     @AfterViews
     void init() {
@@ -61,20 +62,17 @@ public class TimetableFragment extends ActionBarActivity {
 
     @Click
     void refreshBtnClicked(){
-        restBackgroundTrain.getTrains(31, 33);
+        restBackgroundTrain.getTrains(Integer.parseInt(startId.getText().toString()), Integer.parseInt(endId.getText().toString()));
 
     }
 
     public void updateTrains(TrainsList trainsList){
 //        if(trainsList != null){
-        TrainsList trainsList1 = trainsList;
-        TrainsList trainsList2 = trainsList;
             adapter.update(trainsList);
 //        }
     }
 
     public void showError(Exception e){
-        tip.setText(e.getMessage().toString());
         e.printStackTrace(); //debug
     }
 

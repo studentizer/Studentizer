@@ -1,5 +1,6 @@
 package pl.edu.ug.aib.studentizerApp.skmTimetable.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,14 +20,14 @@ public class Train implements Serializable{
 //            "Minute": "12",
 //            "Tip": "W1"
 
-    public int id;
-
-    @JsonProperty("Id")
-    public String idTimetable;
-    @JsonProperty("IdStart")
-    public int idStart;
-    @JsonProperty("IdEnd")
-    public int idEnd;
+//    @JsonIgnore
+//    @JsonProperty("Id")
+//    public String idTimetable;
+//
+//    @JsonProperty("IdStart")
+//    public int idStart;
+//    @JsonProperty("IdEnd")
+//    public int idEnd;
     @JsonProperty("TimetableDate")
     public String timetableDate;
     @JsonProperty("Hour")
