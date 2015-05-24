@@ -6,45 +6,91 @@
     android:layout_height="fill_parent"
 >
 
-    <EditText
-        android:id="@+id/startId"
+    <Spinner
+        android:id="@+id/startIdSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></Spinner>
+
+    <!--<EditText-->
+        <!--android:id="@+id/startId"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:hint="idStart"-->
+        <!--android:inputType="number"-->
+        <!--/>-->
+
+    <Spinner
+        android:id="@+id/endIdSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="idStart"
-        android:inputType="number"
-        />
-    <EditText
-        android:id="@+id/endId"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/startId"
-        android:hint="idEnd"
-        android:inputType="number"
-        />
+        android:layout_below="@+id/startIdSpinner"></Spinner>
+
+    <!--<EditText-->
+        <!--android:id="@+id/endId"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/startId"-->
+        <!--android:hint="idEnd"-->
+        <!--android:inputType="number"-->
+        <!--/>-->
 
         <Button
             android:id="@+id/refreshBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Refresh"
-            android:layout_below="@id/endId"
+            android:text="Wyszukaj rozkład"
+            android:layout_below="@id/endIdSpinner"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
             />
 
-        <TextView
-            android:id="@+id/text"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="Tutaj rozkład jazdy SKM"
-            android:layout_below="@+id/refreshBtn"
-        />
-
-        <ListView
-            android:id="@+id/listTrain"
-            android:layout_below="@id/text"
-            android:layout_marginTop="25dp"
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            />
+            android:layout_below="@+id/refreshBtn">
+
+            <LinearLayout
+                android:id="@+id/leftLayout"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:id="@+id/leftTxtView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="Kierunek:\nWadowice"
+                    android:textSize="18dp"
+                    />
+
+                <ListView
+                    android:layout_height="fill_parent"
+                    android:layout_width="match_parent"
+                    android:id="@+id/listTrainLeftLstView"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/rightLayout"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/rightTxtView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Kierunek:\nSztum"
+                    android:textSize="18dp"
+                    />
+                <ListView
+                    android:layout_height="fill_parent"
+                    android:layout_width="match_parent"
+                    android:id="@+id/listTrainRightLstView"
+                    />
+            </LinearLayout>
+        </LinearLayout>
 
 </RelativeLayout>

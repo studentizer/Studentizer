@@ -29,8 +29,8 @@ public class TrainItemView extends RelativeLayout {
 //    TextView idStart;
 //    @ViewById
 //    TextView idEnd;
-    @ViewById
-    TextView timetableDate;
+//    @ViewById
+//    TextView timetableDate;
     @ViewById
     TextView hour;
     @ViewById
@@ -46,10 +46,10 @@ public class TrainItemView extends RelativeLayout {
         //fill textviews
 //        idStart.setText("idStart: " + Integer.toString(train.idStart));
 //        idEnd.setText(" idEnd: " + Integer.toString(train.idEnd));
-        timetableDate.setText(train.timetableDate.toString());
-        hour.setText(train.hour.toString());
-        minute.setText(train.minute.toString());
-        tip.setText("  " + train.tip.toString());
+//        timetableDate.setText(train.timetableDate.toString());
+        hour.setText(train.hour + ":");
+        minute.setText(train.minute);
+        tip.setText(train.tip);
     }
 
 }

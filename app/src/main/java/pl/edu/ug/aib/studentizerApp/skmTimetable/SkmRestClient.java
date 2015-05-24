@@ -20,6 +20,6 @@ public interface SkmRestClient {
 //    TrainsList getTrains(int start, int end, boolean today);
 
     //method overload
-    @Get("api/trains/?idStart={start}&idEnd={end}")
-    TrainsList getTrains(int start, int end);
+    @Get("api/trains/?idStart={start}&idEnd={end}&hour={hour}")
+    TrainsList getTrains(int start, int end, int hour);
 }

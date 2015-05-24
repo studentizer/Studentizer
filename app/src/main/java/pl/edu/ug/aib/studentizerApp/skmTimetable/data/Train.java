@@ -28,8 +28,8 @@ public class Train implements Serializable{
 //    public int idStart;
 //    @JsonProperty("IdEnd")
 //    public int idEnd;
-    @JsonProperty("TimetableDate")
-    public String timetableDate;
+//    @JsonProperty("TimetableDate")
+//    public String timetableDate;
     @JsonProperty("Hour")
     public String hour;
     @JsonProperty("Minute")
