@@ -2,10 +2,12 @@ package pl.edu.ug.aib.studentizerApp;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.androidannotations.annotations.AfterViews;
@@ -16,41 +18,33 @@ import org.androidannotations.annotations.OptionsItem;
 
 import java.util.List;
 
+import pl.edu.ug.aib.studentizerApp.fragment.DashboardFragment;
 import pl.edu.ug.aib.studentizerApp.fragment.TimetableFragment;
 import pl.edu.ug.aib.studentizerApp.navigationDrawer.DrawerHandler;
 import pl.edu.ug.aib.studentizerApp.skmTimetable.backgroundTasks.RestBackgroundTrainLeft;
 import pl.edu.ug.aib.studentizerApp.skmTimetable.backgroundTasks.RestBackgroundTrainRight;
-import pl.edu.ug.aib.studentizerApp.skmTimetable.data.Train;
 import pl.edu.ug.aib.studentizerApp.skmTimetable.data.TrainsList;
 
 @EActivity(R.layout.activity_drawer)
-public class DrawerActivity extends ActionBarActivity implements TimetableFragment.OnBgTaskListener {
+public class DrawerActivity extends ActionBarActivity implements TimetableFragment.BgTask {
 
+    //region implement the Background Task interface
 
-    private TimetableFragment mTimetableFragment;
+    //communication activity -> fragment (also a RestBackgroundTrainLeft method)
+    public void updateTrainsLeft(TrainsList trainsList){
+        TimetableFragment timetableFragment = (TimetableFragment) getSupportFragmentManager().findFragmentById(R.id.timetableFragment);
 
-
-    public void onBgTaskLeftLaunched(){ //TrainsList trainsListLeft){
-        //Do sth here to display
-        TimetableFragment timetableFragment = (TimetableFragment)getSupportFragmentManager().findFragmentById(R.id.timetableFragment);
-
-//            if (trainsListLeft != null)
-//                timetableFragment.updateTrainsLeft(trainsListLeft);
-        timetableFragment.setString("dupa");
-
-
-    }
-
-    public void onBgTaskRightLaunched(TrainsList trainsListRight){
-        //Do sth here to display
-        TimetableFragment timetableFragment = (TimetableFragment)getSupportFragmentManager().findFragmentById(R.id.timetableFragment);
-
-        if(timetableFragment != null) {
-            if (trainsListRight != null)
-                timetableFragment.updateTrainsLeft(trainsListRight);
+        if(timetableFragment != null){
+            timetableFragment.setString();
+            timetableFragment.updateTrainsLeft(trainsList);
         }
-
     }
+
+    //communication fragment -> activity
+    public void getBgTask(int startId, int endId, int hour){
+        restBackgroundTrainLeft.getTrains(startId, endId, hour);
+    }
+    //endregion
 
     //my background task where is applied method from rest client interface
     @Bean
@@ -99,9 +93,7 @@ public class DrawerActivity extends ActionBarActivity implements TimetableFragme
 
 
     //region BACKGROUND TASK METHODS
-    public void updateTrainsLeft(TrainsList trainsList){
 
-    }
 
     public void updateTrainsRight(TrainsList trainsList){
 
@@ -115,6 +107,39 @@ public class DrawerActivity extends ActionBarActivity implements TimetableFragme
     public void showWarning(){
         Toast.makeText(getApplicationContext(), "Stacja początkowa nie może być\nrówna stacji końcowej", Toast.LENGTH_SHORT).show();
     }
+    //endregion
+
+    //region ON ... methods
+//    @Override
+//    public void onCreate(Bundle savedInstanceState){
+//        super.onCreate(savedInstanceState);
+//
+//        setContentView(R.layout.fragment_dashboard);
+//
+//        // Check that the activity is using the layout version with
+//        // the fragment_container FrameLayout
+//        if (findViewById(R.id.content_frame) != null){
+//            // However, if we're being restored from a previous state,
+//            // then we don't need to do anything and should return or else
+//            // we could end up with overlapping fragments.
+//            if (savedInstanceState != null) {
+//                return;
+//            }
+//
+//            // Create a new Fragment to be placed in the activity layout
+//            DashboardFragment firstFragment = new DashboardFragment();
+//
+//            // In case this activity was started with special instructions from an
+//            // Intent, pass the Intent's extras to the fragment as arguments
+//            firstFragment.setArguments(getIntent().getExtras());
+//
+//            // Add the fragment to the 'fragment_container' FrameLayout
+//            getSupportFragmentManager().beginTransaction()
+//                    .add(R.id.content_frame, firstFragment).commit();
+//        }
+//
+//
+//    }
     //endregion
 
 }

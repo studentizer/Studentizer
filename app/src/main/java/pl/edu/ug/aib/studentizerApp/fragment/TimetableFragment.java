@@ -51,13 +51,31 @@ import pl.edu.ug.aib.studentizerApp.skmTimetable.utilities.DirectionHelpers;
 
 @EFragment(R.layout.fragment_timetable)
 public class TimetableFragment extends Fragment {
-    OnBgTaskListener mCallback;
+    BgTask mCallback; //call back from DrawerActivity
 
     //Container activity must implement that interface
-    public interface OnBgTaskListener{
-        public void onBgTaskLeftLaunched();//TrainsList trainsListLeft);
-        public void onBgTaskRightLaunched(TrainsList trainsListRight);
+    public interface BgTask{
+        public void updateTrainsLeft(TrainsList trainsList);
+        public void getBgTask(int startId, int endId, int hour);
     }
+
+    @Override
+    public void onAttach(Activity activity){
+        super.onAttach(activity);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try{
+            mCallback = (BgTask)activity;
+        } catch(ClassCastException e){
+            throw new ClassCastException(activity.toString() + "must implement an interface!");
+        }
+    }
+
+    public void setString(){
+        leftTxtView.setText("eloelo");
+    }
+
 
     //json single output data model
 //    @Extra
@@ -75,26 +93,30 @@ public class TimetableFragment extends Fragment {
     int currentHour;
 
 
-    //Prepare value for spinner
+    //region Prepare value for spinner
     StationsList list = new StationsList();
     List<Station> allDirections = list.getAllDirections();
     List<Station> allStations = list.getAllStations();
+    //endregion
 
-    //Hashmaps, Arrays for Spinners
+    //region Hashmaps, Arrays for Spinners
     String[] endSpinnerArray = new String[ allDirections.size() ];
     String[] startSpinnerArray = new String [ allStations.size() ];
     HashMap<String, String> endSpinnerMap = new HashMap<String, String>();
     HashMap<String, String> startSpinnerMap = new HashMap<String, String>();
+    //endregion
 
     Station closestStation = new Station(); //used in geolocation service
     DirectionHelpers direcionHelpers = new DirectionHelpers();
 
-    //listview from fragment_timetable
+    //region listview from fragment_timetable
     @ViewById(R.id.listTrainLeftLstView)
     ListView listTrainLeftLstView;
     @ViewById(R.id.listTrainRightLstView)
     ListView listTrainRightLstView;
+    //endregion
 
+    //region UI controls (buttons, spinners, textviews, etc.
     @ViewById
     Button refreshBtn;
     @ViewById
@@ -111,6 +133,7 @@ public class TimetableFragment extends Fragment {
     LinearLayout leftLayout;
     @ViewById
     LinearLayout rightLayout;
+    //endregion
 
     ProgressDialog ringProgressDialog;
 
@@ -159,6 +182,7 @@ public class TimetableFragment extends Fragment {
 
                 //region fill listviews with timetable from closest station to closest directions
 
+
                 //direction iteration before/after the closest station
                 int directionAfterCurrentIter = direcionHelpers.getDirectionAfterCurrent(allStations, closestStation.id);
                 int directionBeforeCurrentIter = direcionHelpers.getDirectionBeforeCurrent(allStations, closestStation.id);
@@ -176,7 +200,6 @@ public class TimetableFragment extends Fragment {
                     //restBackgroundTrainRight.getTrains(closestStation.id, endStationRight.id, currentHour);
                 }
                 //endregion
-
 
                 //toast with GPS accuracy
                 Toast.makeText(getActivity().getApplicationContext(),
@@ -251,9 +274,8 @@ public class TimetableFragment extends Fragment {
 //        int iter = direcionHelpers.getDirectionIteration(allStations, Integer.valueOf(name));
 //        leftTxtView.setText("Kierunek:\n" + direcionHelpers.getDirection(allStations, iter).name);
 
+        mCallback.getBgTask(31, 33, 18);
         //restBackgroundTrainLeft.getTrains(Integer.parseInt(startId), Integer.parseInt(endId), currentHour);
-        mCallback.onBgTaskLeftLaunched();
-
     }
     //endregion
 
@@ -337,19 +359,7 @@ public class TimetableFragment extends Fragment {
         geolocationService.cancelTimer();
     }
 
-    @Override
-    public void onAttach(Activity activity){
-        super.onAttach(activity);
 
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
-        try {
-            mCallback = (OnBgTaskListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnBgTaskListener");
-        }
-    }
 
 
     //endregion
