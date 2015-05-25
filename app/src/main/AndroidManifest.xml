@@ -18,7 +18,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".fragment.TimetableFragment_"
+            android:name=".DrawerActivity_"
             android:label="@string/app_name"
             android:configChanges="orientation|screenSize"> <!--hold values in listview while changing screen orientation-->
             <intent-filter>
@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".FragmentActivity_" />
-        <activity android:name=".DrawerActivity_" />
+        <!--<activity android:name=".DrawerActivity_" />-->
 
     </application>
 

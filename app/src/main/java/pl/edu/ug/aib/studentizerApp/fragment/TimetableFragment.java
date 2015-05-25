@@ -1,12 +1,18 @@
 package pl.edu.ug.aib.studentizerApp.fragment;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -19,6 +25,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.NonConfigurationInstance;
 import org.androidannotations.annotations.ViewById;
@@ -42,19 +49,19 @@ import pl.edu.ug.aib.studentizerApp.skmTimetable.gps.GeolocationService;
 import pl.edu.ug.aib.studentizerApp.skmTimetable.gps.GeolocationUtilities;
 import pl.edu.ug.aib.studentizerApp.skmTimetable.utilities.DirectionHelpers;
 
-@EActivity(R.layout.fragment_timetable)
-public class TimetableFragment extends ActionBarActivity {
-    //json single output data model
-    @Extra
-    Train train;
+@EFragment(R.layout.fragment_timetable)
+public class TimetableFragment extends Fragment {
+    OnBgTaskListener mCallback;
 
-    //my background task where is applied method from rest client interface
-    @Bean
-    @NonConfigurationInstance
-    RestBackgroundTrainLeft restBackgroundTrainLeft;
-    @Bean
-    @NonConfigurationInstance
-    RestBackgroundTrainRight restBackgroundTrainRight;
+    //Container activity must implement that interface
+    public interface OnBgTaskListener{
+        public void onBgTaskLeftLaunched();//TrainsList trainsListLeft);
+        public void onBgTaskRightLaunched(TrainsList trainsListRight);
+    }
+
+    //json single output data model
+//    @Extra
+    Train train;
 
     //adapter
     @Bean
@@ -78,7 +85,6 @@ public class TimetableFragment extends ActionBarActivity {
     String[] startSpinnerArray = new String [ allStations.size() ];
     HashMap<String, String> endSpinnerMap = new HashMap<String, String>();
     HashMap<String, String> startSpinnerMap = new HashMap<String, String>();
-
 
     Station closestStation = new Station(); //used in geolocation service
     DirectionHelpers direcionHelpers = new DirectionHelpers();
@@ -111,16 +117,12 @@ public class TimetableFragment extends ActionBarActivity {
     public double lat;
     public double lon;
 
+    public void setString(String str){
+        leftTxtView.setText(str);
+    }
+
     @AfterViews
     void init() {
-        //launch ProgressDialog
-        ringProgressDialog = new ProgressDialog(this);
-        ringProgressDialog.setMessage("Ładowanie rozkładów\nz najbliższej stacji");
-        ringProgressDialog.setIndeterminate(true);
-
-        if(!ringProgressDialog.isShowing())
-            ringProgressDialog.show();
-
         //initialize current hour
         calendar.setTime(date);
         currentHour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -165,32 +167,34 @@ public class TimetableFragment extends ActionBarActivity {
                 if(directionBeforeCurrentIter > 0){
                     Station endStationLeft = direcionHelpers.getDirection(allStations, directionBeforeCurrentIter);
                     leftTxtView.setText("Kierunek:\n" + endStationLeft.name);
-                    restBackgroundTrainLeft.getTrains(closestStation.id, endStationLeft.id, currentHour);
+                    //restBackgroundTrainLeft.getTrains(closestStation.id, endStationLeft.id, currentHour);
                 }
                 //REST background task for right listview
                 if(directionAfterCurrentIter > 0){
                     Station endStationRight = direcionHelpers.getDirection(allStations, directionAfterCurrentIter);
                     rightTxtView.setText("Kierunek:\n" + endStationRight.name);
-                    restBackgroundTrainRight.getTrains(closestStation.id, endStationRight.id, currentHour);
+                    //restBackgroundTrainRight.getTrains(closestStation.id, endStationRight.id, currentHour);
                 }
                 //endregion
 
 
                 //toast with GPS accuracy
-                Toast.makeText(getApplicationContext(),
+                Toast.makeText(getActivity().getApplicationContext(),
                         "Znaleziono najbliższą stację\nDokładność GPS: " + String.valueOf(Math.round(location.getAccuracy())) + " m",
                         Toast.LENGTH_SHORT).show();
             }
         };
 
         GeolocationService geolocationService = new GeolocationService();
-        geolocationService.getLocation(this, locationResult);
+        geolocationService.getLocation(getActivity().getApplicationContext(), locationResult);
 
     }
 
+
+
     //region Spinner methods
     private int getSelectedPosition(String[] dataArray, String stationName){
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, dataArray);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, dataArray);
 
         return spinnerArrayAdapter.getPosition(stationName);
     }
@@ -203,7 +207,7 @@ public class TimetableFragment extends ActionBarActivity {
     }
 
     private void setDataInSpinner(Spinner spinner, String[] dataArray) {
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, dataArray);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, dataArray);
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
 
         spinner.setAdapter(spinnerArrayAdapter);
@@ -233,21 +237,23 @@ public class TimetableFragment extends ActionBarActivity {
     @Click
     void refreshBtnClicked(){
         //set progress dialog
-        ringProgressDialog.setMessage("Ładowanie rozkładu...");
-        ringProgressDialog.show();
+//        ringProgressDialog.setMessage("Ładowanie rozkładu...");
+//        ringProgressDialog.show();
+//
+//        //delete linear layout at the right side
+//        rightLayout.setVisibility(View.GONE);
+//
+//        String endId = getDataFromSpinner(this.endIdSpinner, this.endSpinnerMap);
+//        String startId = getDataFromSpinner(this.startIdSpinner, this.startSpinnerMap);
+//
+//        //get value from lower spinner
+//        String name = getDataFromSpinner(endIdSpinner, endSpinnerMap);
+//        int iter = direcionHelpers.getDirectionIteration(allStations, Integer.valueOf(name));
+//        leftTxtView.setText("Kierunek:\n" + direcionHelpers.getDirection(allStations, iter).name);
 
-        //delete linear layout at the right side
-        rightLayout.setVisibility(View.GONE);
+        //restBackgroundTrainLeft.getTrains(Integer.parseInt(startId), Integer.parseInt(endId), currentHour);
+        mCallback.onBgTaskLeftLaunched();
 
-        String endId = getDataFromSpinner(this.endIdSpinner, this.endSpinnerMap);
-        String startId = getDataFromSpinner(this.startIdSpinner, this.startSpinnerMap);
-
-        //get value from lower spinner
-        String name = getDataFromSpinner(endIdSpinner, endSpinnerMap);
-        int iter = direcionHelpers.getDirectionIteration(allStations, Integer.valueOf(name));
-        leftTxtView.setText("Kierunek:\n" + direcionHelpers.getDirection(allStations, iter).name);
-
-        restBackgroundTrainLeft.getTrains(Integer.parseInt(startId), Integer.parseInt(endId), currentHour);
     }
     //endregion
 
@@ -273,37 +279,78 @@ public class TimetableFragment extends ActionBarActivity {
     public void showError(Exception e){
         ringProgressDialog.dismiss();
 
-        Toast.makeText(getApplicationContext(), "Błąd", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity().getApplicationContext(), "Błąd", Toast.LENGTH_SHORT).show();
         e.printStackTrace(); //debug
     }
 
     public void showWarning(){
         ringProgressDialog.dismiss();
 
-        Toast.makeText(getApplicationContext(), "Stacja początkowa nie może być\nrówna stacji końcowej", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity().getApplicationContext(), "Stacja początkowa nie może być\nrówna stacji końcowej", Toast.LENGTH_SHORT).show();
     }
     //endregion
 
 
     //region ON... METHODS
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_timetable);
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.login, menu);
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        //setContentView(R.layout.fragment_timetable);
+//
+//    }
+////    @Override
+////    public boolean onCreateOptionsMenu(Menu menu) {
+////        // Inflate the menu; this adds items to the action bar if it is present.
+////        //getMenuInflater().inflate(R.menu.login, menu);
+////        return true;
+////    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
-        return super.onOptionsItemSelected(item);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        //launch ProgressDialog
+//        ringProgressDialog = new ProgressDialog(getActivity().getApplicationContext());
+//        ringProgressDialog.setMessage("Ładowanie rozkładów\nz najbliższej stacji");
+//        ringProgressDialog.setIndeterminate(true);
+//
+//        if(!ringProgressDialog.isShowing())
+//            ringProgressDialog.show();
+
+        return inflater.inflate(R.layout.fragment_timetable, container, false);
     }
+
+
+    //avoid app-crashing during getting the GPS location
+    @Override
+    public void onPause(){
+        super.onPause();
+        GeolocationService geolocationService = new GeolocationService();
+        geolocationService.cancelTimer();
+    }
+
+    @Override
+    public void onAttach(Activity activity){
+        super.onAttach(activity);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (OnBgTaskListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnBgTaskListener");
+        }
+    }
+
+
     //endregion
 }

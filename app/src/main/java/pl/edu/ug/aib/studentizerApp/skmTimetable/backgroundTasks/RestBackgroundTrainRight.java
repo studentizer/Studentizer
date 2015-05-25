@@ -6,6 +6,7 @@ import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.rest.RestService;
 
+import pl.edu.ug.aib.studentizerApp.DrawerActivity;
 import pl.edu.ug.aib.studentizerApp.fragment.TimetableFragment;
 import pl.edu.ug.aib.studentizerApp.skmTimetable.SkmRestClient;
 import pl.edu.ug.aib.studentizerApp.skmTimetable.data.TrainsList;
@@ -16,7 +17,7 @@ import pl.edu.ug.aib.studentizerApp.skmTimetable.data.TrainsList;
 @EBean
 public class RestBackgroundTrainRight {
     @RootContext
-    TimetableFragment activity; //activity with listview
+    DrawerActivity activity; //activity with listview
     @RestService
     SkmRestClient restClient; //now I'm using my awesome API
 

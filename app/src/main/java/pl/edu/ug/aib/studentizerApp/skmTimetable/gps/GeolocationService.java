@@ -108,6 +108,14 @@ public class GeolocationService {
         }
     }
 
+
+    //avoid app crashing
+    public void cancelTimer() {
+        timer1.cancel();
+        lm.removeUpdates(locationListenerGps);
+        lm.removeUpdates(locationListenerNetwork);
+    }
+
     public static abstract class LocationResult{
         public abstract void gotLocation(Location location);
     }
