@@ -61,7 +61,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:text="Kierunek:\nWadowice"
                     android:textSize="18dp"
                     />
 
@@ -82,7 +81,6 @@
                     android:id="@+id/rightTxtView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Kierunek:\nSztum"
                     android:textSize="18dp"
                     />
                 <ListView

@@ -108,7 +108,6 @@ public class GeolocationService {
         }
     }
 
-
     //avoid app crashing
     public void cancelTimer() {
         timer1.cancel();

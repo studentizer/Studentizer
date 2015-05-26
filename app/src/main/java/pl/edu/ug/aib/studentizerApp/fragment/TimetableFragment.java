@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -24,10 +22,7 @@ import android.widget.Toast;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.Extra;
-import org.androidannotations.annotations.NonConfigurationInstance;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.Calendar;
@@ -38,9 +33,7 @@ import java.util.List;
 import java.util.Set;
 
 import pl.edu.ug.aib.studentizerApp.R;
-import pl.edu.ug.aib.studentizerApp.skmTimetable.backgroundTasks.RestBackgroundTrainLeft;
 import pl.edu.ug.aib.studentizerApp.skmTimetable.adapter.TrainsListAdapter;
-import pl.edu.ug.aib.studentizerApp.skmTimetable.backgroundTasks.RestBackgroundTrainRight;
 import pl.edu.ug.aib.studentizerApp.skmTimetable.data.Station;
 import pl.edu.ug.aib.studentizerApp.skmTimetable.data.StationsList;
 import pl.edu.ug.aib.studentizerApp.skmTimetable.data.Train;
@@ -56,7 +49,10 @@ public class TimetableFragment extends Fragment {
     //Container activity must implement that interface
     public interface BgTask{
         public void updateTrainsLeft(TrainsList trainsList);
-        public void getBgTask(int startId, int endId, int hour);
+        public void getBgTaskLeft(int startId, int endId, int hour);
+
+        public void updateTrainsRight(TrainsList trainsList);
+        public void getBgTaskRight(int startId, int endIt, int hour);
     }
 
     @Override
@@ -72,26 +68,23 @@ public class TimetableFragment extends Fragment {
         }
     }
 
-    public void setString(){
-        leftTxtView.setText("eloelo");
-    }
-
-
     //json single output data model
+    //TODO: check if this is necessary
 //    @Extra
     Train train;
 
-    //adapter
+    //region adapters
     @Bean
     TrainsListAdapter adapterLeft;
     @Bean
     TrainsListAdapter adapterRight;
+    //endregion
 
-    //to get current hour
+    //region to get current hour
     Date date = new Date();
     Calendar calendar = GregorianCalendar.getInstance();
     int currentHour;
-
+    //endregion
 
     //region Prepare value for spinner
     StationsList list = new StationsList();
@@ -159,7 +152,7 @@ public class TimetableFragment extends Fragment {
         setDataInSpinner(this.startIdSpinner, this.startSpinnerArray);
 
         //Get closest station
-        GeolocationService.LocationResult locationResult = new GeolocationService.LocationResult(){
+        final GeolocationService.LocationResult locationResult = new GeolocationService.LocationResult(){
             @Override
             public void gotLocation(Location location){
                 //Got the location!
@@ -176,9 +169,9 @@ public class TimetableFragment extends Fragment {
                 int spinnerPosition = getSelectedPosition(startSpinnerArray, closestStation.name);
                 startIdSpinner.setSelection(spinnerPosition, true);
 
-                //set adapter
-                listTrainLeftLstView.setAdapter(adapterLeft);
-                listTrainRightLstView.setAdapter(adapterRight);
+                //set adapter (not need - adapters are set in updateTrains methods)
+                //listTrainLeftLstView.setAdapter(adapterLeft);
+                //listTrainRightLstView.setAdapter(adapterRight);
 
                 //region fill listviews with timetable from closest station to closest directions
 
@@ -191,15 +184,17 @@ public class TimetableFragment extends Fragment {
                 if(directionBeforeCurrentIter > 0){
                     Station endStationLeft = direcionHelpers.getDirection(allStations, directionBeforeCurrentIter);
                     leftTxtView.setText("Kierunek:\n" + endStationLeft.name);
-                    //restBackgroundTrainLeft.getTrains(closestStation.id, endStationLeft.id, currentHour);
+                    mCallback.getBgTaskLeft(closestStation.id, endStationLeft.id, currentHour);
                 }
                 //REST background task for right listview
                 if(directionAfterCurrentIter > 0){
                     Station endStationRight = direcionHelpers.getDirection(allStations, directionAfterCurrentIter);
                     rightTxtView.setText("Kierunek:\n" + endStationRight.name);
-                    //restBackgroundTrainRight.getTrains(closestStation.id, endStationRight.id, currentHour);
+                    mCallback.getBgTaskRight(closestStation.id, endStationRight.id, currentHour);
                 }
                 //endregion
+
+
 
                 //toast with GPS accuracy
                 Toast.makeText(getActivity().getApplicationContext(),
@@ -262,35 +257,36 @@ public class TimetableFragment extends Fragment {
         //set progress dialog
 //        ringProgressDialog.setMessage("Ładowanie rozkładu...");
 //        ringProgressDialog.show();
-//
-//        //delete linear layout at the right side
-//        rightLayout.setVisibility(View.GONE);
-//
-//        String endId = getDataFromSpinner(this.endIdSpinner, this.endSpinnerMap);
-//        String startId = getDataFromSpinner(this.startIdSpinner, this.startSpinnerMap);
-//
-//        //get value from lower spinner
-//        String name = getDataFromSpinner(endIdSpinner, endSpinnerMap);
-//        int iter = direcionHelpers.getDirectionIteration(allStations, Integer.valueOf(name));
-//        leftTxtView.setText("Kierunek:\n" + direcionHelpers.getDirection(allStations, iter).name);
 
-        mCallback.getBgTask(31, 33, 18);
-        //restBackgroundTrainLeft.getTrains(Integer.parseInt(startId), Integer.parseInt(endId), currentHour);
+        //delete linear layout at the right side
+        rightLayout.setVisibility(View.GONE);
+
+        String endId = getDataFromSpinner(this.endIdSpinner, this.endSpinnerMap);
+        String startId = getDataFromSpinner(this.startIdSpinner, this.startSpinnerMap);
+
+        //get value from lower spinner
+        String name = getDataFromSpinner(endIdSpinner, endSpinnerMap);
+        int iter = direcionHelpers.getDirectionIteration(allStations, Integer.valueOf(name));
+        leftTxtView.setText("Kierunek:\n" + direcionHelpers.getDirection(allStations, iter).name);
+
+        mCallback.getBgTaskLeft(Integer.parseInt(startId), Integer.parseInt(endId), currentHour);
     }
     //endregion
 
     //region BACKGROUND TASK METHODS
     public void updateTrainsLeft(TrainsList trainsList){
         if(trainsList != null){
+            listTrainLeftLstView.setAdapter(adapterLeft);
             adapterLeft.update(trainsList);
         }
 
-        if(ringProgressDialog.isShowing())
-            ringProgressDialog.dismiss();
+//        if(ringProgressDialog.isShowing())
+//            ringProgressDialog.dismiss();
     }
 
     public void updateTrainsRight(TrainsList trainsList){
         if(trainsList != null) {
+            listTrainRightLstView.setAdapter(adapterRight);
             adapterRight.update(trainsList);
         }
 
@@ -299,14 +295,14 @@ public class TimetableFragment extends Fragment {
     }
 
     public void showError(Exception e){
-        ringProgressDialog.dismiss();
+//        ringProgressDialog.dismiss();
 
         Toast.makeText(getActivity().getApplicationContext(), "Błąd", Toast.LENGTH_SHORT).show();
         e.printStackTrace(); //debug
     }
 
     public void showWarning(){
-        ringProgressDialog.dismiss();
+//        ringProgressDialog.dismiss();
 
         Toast.makeText(getActivity().getApplicationContext(), "Stacja początkowa nie może być\nrówna stacji końcowej", Toast.LENGTH_SHORT).show();
     }
@@ -352,15 +348,19 @@ public class TimetableFragment extends Fragment {
 
 
     //avoid app-crashing during getting the GPS location
-    @Override
-    public void onPause(){
-        super.onPause();
-        GeolocationService geolocationService = new GeolocationService();
-        geolocationService.cancelTimer();
-    }
+//    @Override
+//    public void onPause(){
+//        super.onPause();
+//        GeolocationService geolocationService = new GeolocationService();
+//        geolocationService.cancelTimer();
+//    }
 
 
 
 
     //endregion
+
+
+
+
 }

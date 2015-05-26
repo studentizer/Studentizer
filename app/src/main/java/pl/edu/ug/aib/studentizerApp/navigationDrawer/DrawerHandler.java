@@ -25,13 +25,13 @@ public class DrawerHandler implements ListView.OnItemClickListener {
 
     private static final int DEFAULT_MENU_ITEM_POSITION = 0;
 
+    private Fragment fragment;
+
     @RootContext
     DrawerActivity drawerActivity;
 
     @Bean
     DrawerListAdapter drawerListAdapter;
-
-    //test konraddroptable
 
     @ViewById(R.id.drawer_layout)
     DrawerLayout drawerLayout;
@@ -89,6 +89,8 @@ public class DrawerHandler implements ListView.OnItemClickListener {
             FragmentManager fragmentManager = drawerActivity.getSupportFragmentManager();
             final Class<? extends Fragment> fragmentClass = drawerItem.getFragmentClass();
             Fragment fragment = fragmentClass.newInstance();
+            this.fragment = fragment;
+
             fragmentManager.beginTransaction()
                            .replace(R.id.content_frame, fragment)
                            .commit();
@@ -96,6 +98,10 @@ public class DrawerHandler implements ListView.OnItemClickListener {
             Log.e(LOG_TAG, "Error in drawer item selection", e);
         }
 
+    }
+
+    public Fragment getFragment(){
+        return this.fragment;
     }
 
     public boolean drawerToggleSelected(MenuItem item) {

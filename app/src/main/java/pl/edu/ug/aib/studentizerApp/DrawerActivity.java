@@ -32,17 +32,30 @@ public class DrawerActivity extends ActionBarActivity implements TimetableFragme
 
     //communication activity -> fragment (also a RestBackgroundTrainLeft method)
     public void updateTrainsLeft(TrainsList trainsList){
-        TimetableFragment timetableFragment = (TimetableFragment) getSupportFragmentManager().findFragmentById(R.id.timetableFragment);
+        //TODO: use try...catch
+        TimetableFragment timetableFragment = (TimetableFragment) drawerHandler.getFragment();
 
         if(timetableFragment != null){
-            timetableFragment.setString();
             timetableFragment.updateTrainsLeft(trainsList);
         }
     }
 
+    public void updateTrainsRight(TrainsList trainsList){
+        //TODO: use try...catch
+        TimetableFragment timetableFragment = (TimetableFragment) drawerHandler.getFragment();
+
+        if(timetableFragment != null){
+            timetableFragment.updateTrainsRight(trainsList);
+        }
+    }
+
     //communication fragment -> activity
-    public void getBgTask(int startId, int endId, int hour){
+    public void getBgTaskLeft(int startId, int endId, int hour){
         restBackgroundTrainLeft.getTrains(startId, endId, hour);
+    }
+
+    public void getBgTaskRight(int startId, int endId, int hour){
+        restBackgroundTrainRight.getTrains(startId, endId, hour);
     }
     //endregion
 
@@ -93,12 +106,6 @@ public class DrawerActivity extends ActionBarActivity implements TimetableFragme
 
 
     //region BACKGROUND TASK METHODS
-
-
-    public void updateTrainsRight(TrainsList trainsList){
-
-    }
-
     public void showError(Exception e){
         Toast.makeText(getApplicationContext(), "Błąd", Toast.LENGTH_SHORT).show();
         e.printStackTrace(); //debug
