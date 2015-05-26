@@ -12,7 +12,6 @@ import pl.edu.ug.aib.studentizerApp.skmTimetable.data.StationsList;
  */
 public class GeolocationUtilities {
 
-    //TODO: wykorzystanie tej metody na znalezienie najbliższej stacji
     public Station getClosestStation(double latitude, double longitude){
         Station station = new Station();
         StationsList allStations = new StationsList();

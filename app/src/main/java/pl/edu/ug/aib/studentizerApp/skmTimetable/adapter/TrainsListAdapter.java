@@ -63,7 +63,6 @@ public class TrainsListAdapter  extends BaseAdapter {
     }
 
     public void update(TrainsList trains) {
-        //TODO: check it, probably sth went wrong
         trainsTimetable.clear();
         trainsTimetable.addAll(trains.records);
         this.notifyDataSetChanged();

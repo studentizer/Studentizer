@@ -69,9 +69,9 @@ public class TimetableFragment extends Fragment {
     }
 
     //json single output data model
-    //TODO: check if this is necessary
-//    @Extra
-    Train train;
+    //check if this is necessary: not necessary
+    //@Extra
+    //Train train;
 
     //region adapters
     @Bean
@@ -133,15 +133,11 @@ public class TimetableFragment extends Fragment {
     public double lat;
     public double lon;
 
-    public void setString(String str){
-        leftTxtView.setText(str);
-    }
-
     @AfterViews
     void init() {
         //initialize current hour
         calendar.setTime(date);
-        currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+        currentHour = calendar.get(Calendar.HOUR_OF_DAY) + 1;
 
         //Prepare values to a spinner
         prepareValuesToSpinner(this.allDirections, this.endSpinnerArray, this.endSpinnerMap);
@@ -212,7 +208,7 @@ public class TimetableFragment extends Fragment {
 
     //region Spinner methods
     private int getSelectedPosition(String[] dataArray, String stationName){
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, dataArray);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, dataArray);
 
         return spinnerArrayAdapter.getPosition(stationName);
     }
@@ -225,8 +221,8 @@ public class TimetableFragment extends Fragment {
     }
 
     private void setDataInSpinner(Spinner spinner, String[] dataArray) {
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, dataArray);
-        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item, dataArray);
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner.setAdapter(spinnerArrayAdapter);
         spinnerArrayAdapter.notifyDataSetChanged();
@@ -255,8 +251,8 @@ public class TimetableFragment extends Fragment {
     @Click
     void refreshBtnClicked(){
         //set progress dialog
-//        ringProgressDialog.setMessage("Ładowanie rozkładu...");
-//        ringProgressDialog.show();
+        ringProgressDialog.setMessage("Ładowanie rozkładu...");
+        ringProgressDialog.show();
 
         //delete linear layout at the right side
         rightLayout.setVisibility(View.GONE);
@@ -278,10 +274,11 @@ public class TimetableFragment extends Fragment {
         if(trainsList != null){
             listTrainLeftLstView.setAdapter(adapterLeft);
             adapterLeft.update(trainsList);
+            Toast.makeText(getActivity(), "Zaktualizowano rozkład jazdy", Toast.LENGTH_SHORT).show();
         }
 
-//        if(ringProgressDialog.isShowing())
-//            ringProgressDialog.dismiss();
+        if(ringProgressDialog.isShowing())
+            ringProgressDialog.dismiss();
     }
 
     public void updateTrainsRight(TrainsList trainsList){
@@ -290,19 +287,19 @@ public class TimetableFragment extends Fragment {
             adapterRight.update(trainsList);
         }
 
-//        if(ringProgressDialog.isShowing())
-//            ringProgressDialog.dismiss();
+        if(ringProgressDialog.isShowing())
+            ringProgressDialog.dismiss();
     }
 
     public void showError(Exception e){
-//        ringProgressDialog.dismiss();
+        ringProgressDialog.dismiss();
 
         Toast.makeText(getActivity().getApplicationContext(), "Błąd", Toast.LENGTH_SHORT).show();
         e.printStackTrace(); //debug
     }
 
     public void showWarning(){
-//        ringProgressDialog.dismiss();
+        ringProgressDialog.dismiss();
 
         Toast.makeText(getActivity().getApplicationContext(), "Stacja początkowa nie może być\nrówna stacji końcowej", Toast.LENGTH_SHORT).show();
     }
@@ -334,14 +331,17 @@ public class TimetableFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //TODO: sprawdzić czy ma to sens
+        super.onCreateView(inflater, container, savedInstanceState);
+
         // Inflate the layout for this fragment
         //launch ProgressDialog
-//        ringProgressDialog = new ProgressDialog(getActivity().getApplicationContext());
-//        ringProgressDialog.setMessage("Ładowanie rozkładów\nz najbliższej stacji");
-//        ringProgressDialog.setIndeterminate(true);
-//
-//        if(!ringProgressDialog.isShowing())
-//            ringProgressDialog.show();
+        ringProgressDialog = new ProgressDialog(getActivity());
+        ringProgressDialog.setMessage("Ładowanie rozkładów\nz najbliższej stacji");
+        ringProgressDialog.setIndeterminate(true);
+
+        if(!ringProgressDialog.isShowing())
+            ringProgressDialog.show();
 
         return inflater.inflate(R.layout.fragment_timetable, container, false);
     }
