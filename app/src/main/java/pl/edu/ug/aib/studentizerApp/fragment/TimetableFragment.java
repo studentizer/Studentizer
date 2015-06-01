@@ -1,5 +1,6 @@
 package pl.edu.ug.aib.studentizerApp.fragment;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -9,6 +10,8 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -31,6 +34,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.Timer;
 
 import pl.edu.ug.aib.studentizerApp.R;
 import pl.edu.ug.aib.studentizerApp.skmTimetable.adapter.TrainsListAdapter;
@@ -44,6 +48,8 @@ import pl.edu.ug.aib.studentizerApp.skmTimetable.utilities.DirectionHelpers;
 
 @EFragment(R.layout.fragment_timetable)
 public class TimetableFragment extends Fragment {
+
+    //region communication between fragments-activity (in both ways)
     BgTask mCallback; //call back from DrawerActivity
 
     //Container activity must implement that interface
@@ -67,6 +73,7 @@ public class TimetableFragment extends Fragment {
             throw new ClassCastException(activity.toString() + "must implement an interface!");
         }
     }
+    //endregion
 
     //json single output data model
     //check if this is necessary: not necessary
@@ -99,9 +106,6 @@ public class TimetableFragment extends Fragment {
     HashMap<String, String> startSpinnerMap = new HashMap<String, String>();
     //endregion
 
-    Station closestStation = new Station(); //used in geolocation service
-    DirectionHelpers direcionHelpers = new DirectionHelpers();
-
     //region listview from fragment_timetable
     @ViewById(R.id.listTrainLeftLstView)
     ListView listTrainLeftLstView;
@@ -130,11 +134,21 @@ public class TimetableFragment extends Fragment {
 
     ProgressDialog ringProgressDialog;
 
-    public double lat;
-    public double lon;
+    //region GPS variables
+    Station closestStation = new Station(); //used in geolocation service
+    DirectionHelpers direcionHelpers = new DirectionHelpers();
+    //they have to be here (used also in overridden onPause method)
+    GeolocationService geolocationService = new GeolocationService();
+    GeolocationService.LocationResult locationResult;
+
+    private double lat;
+    private double lon;
+    //endregion
 
     @AfterViews
     void init() {
+        getActivity().setTitle(R.string.title_timetable);
+
         //initialize current hour
         calendar.setTime(date);
         currentHour = calendar.get(Calendar.HOUR_OF_DAY) + 1;
@@ -148,7 +162,7 @@ public class TimetableFragment extends Fragment {
         setDataInSpinner(this.startIdSpinner, this.startSpinnerArray);
 
         //Get closest station
-        final GeolocationService.LocationResult locationResult = new GeolocationService.LocationResult(){
+        locationResult = new GeolocationService.LocationResult(){
             @Override
             public void gotLocation(Location location){
                 //Got the location!
@@ -164,13 +178,6 @@ public class TimetableFragment extends Fragment {
                 //set spinner with starting station
                 int spinnerPosition = getSelectedPosition(startSpinnerArray, closestStation.name);
                 startIdSpinner.setSelection(spinnerPosition, true);
-
-                //set adapter (not need - adapters are set in updateTrains methods)
-                //listTrainLeftLstView.setAdapter(adapterLeft);
-                //listTrainRightLstView.setAdapter(adapterRight);
-
-                //region fill listviews with timetable from closest station to closest directions
-
 
                 //direction iteration before/after the closest station
                 int directionAfterCurrentIter = direcionHelpers.getDirectionAfterCurrent(allStations, closestStation.id);
@@ -190,18 +197,16 @@ public class TimetableFragment extends Fragment {
                 }
                 //endregion
 
-
-
                 //toast with GPS accuracy
                 Toast.makeText(getActivity().getApplicationContext(),
                         "Znaleziono najbliższą stację\nDokładność GPS: " + String.valueOf(Math.round(location.getAccuracy())) + " m",
                         Toast.LENGTH_SHORT).show();
             }
+
         };
 
-        GeolocationService geolocationService = new GeolocationService();
-        geolocationService.getLocation(getActivity().getApplicationContext(), locationResult);
-
+        //launch overridden method
+        geolocationService.getLocation(getActivity(), locationResult);
     }
 
 
@@ -305,33 +310,10 @@ public class TimetableFragment extends Fragment {
     }
     //endregion
 
-
-    //region ON... METHODS
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        //setContentView(R.layout.fragment_timetable);
-//
-//    }
-////    @Override
-////    public boolean onCreateOptionsMenu(Menu menu) {
-////        // Inflate the menu; this adds items to the action bar if it is present.
-////        //getMenuInflater().inflate(R.menu.login, menu);
-////        return true;
-////    }
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//
-//        return super.onOptionsItemSelected(item);
-//    }
-
+    //region ON... methods
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //TODO: sprawdzić czy ma to sens
         super.onCreateView(inflater, container, savedInstanceState);
 
         // Inflate the layout for this fragment
@@ -346,21 +328,16 @@ public class TimetableFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_timetable, container, false);
     }
 
-
     //avoid app-crashing during getting the GPS location
-//    @Override
-//    public void onPause(){
-//        super.onPause();
-//        GeolocationService geolocationService = new GeolocationService();
-//        geolocationService.cancelTimer();
-//    }
+    @Override
+    public void onPause(){
+        //cancel the gps request timer to prevent app crashes during fragment switching
+        geolocationService.cancelTimer(getActivity(), locationResult);
 
-
+        super.onPause();
+    }
 
 
     //endregion
-
-
-
 
 }

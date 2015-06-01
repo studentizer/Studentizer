@@ -6,7 +6,8 @@
     <string name="welcome">Wprowadź dane logowania</string>
     <string name="username">nazwa użytkownika</string>
     <string name="password">hasło</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_help">Pomoc</string>
+    <string name="action_settings">Ustawienia</string>
     <string name="refresh">Odśwież</string>
     <string name="phoneNumber">numer telefonu</string>
     <string name="dial">Zadzwoń</string>

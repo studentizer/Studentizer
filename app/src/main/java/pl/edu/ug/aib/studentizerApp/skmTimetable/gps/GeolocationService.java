@@ -16,18 +16,13 @@ import java.util.TimerTask;
  * Created by Konrad on 22.05.2015.
  */
 public class GeolocationService {
-//    Context context;
-//    public GeolocationService(Context context){
-//        this.context = context;
-//    }
     Timer timer1;
     LocationManager lm;
     LocationResult locationResult;
     boolean gps_enabled=false;
     boolean network_enabled=false;
 
-    public boolean getLocation(Context context, LocationResult result)
-    {
+    public boolean getLocation(Context context, LocationResult result){
         //I use LocationResult callback class to pass location value from MyLocation to user code.
         locationResult=result;
         if(lm==null)
@@ -47,6 +42,14 @@ public class GeolocationService {
             lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListenerNetwork);
         timer1=new Timer();
         timer1.schedule(new GetLastLocation(), 20000);
+        return true;
+    }
+
+    public boolean cancelTimer(Context context, LocationResult result){
+        timer1.cancel();
+        lm.removeUpdates(locationListenerGps);
+        lm.removeUpdates(locationListenerNetwork);
+
         return true;
     }
 
@@ -73,7 +76,6 @@ public class GeolocationService {
         public void onProviderEnabled(String provider) {}
         public void onStatusChanged(String provider, int status, Bundle extras) {}
     };
-
 
     class GetLastLocation extends TimerTask {
         @Override
@@ -108,15 +110,22 @@ public class GeolocationService {
         }
     }
 
-    //avoid app crashing
-    public void cancelTimer() {
-        timer1.cancel();
-        lm.removeUpdates(locationListenerGps);
-        lm.removeUpdates(locationListenerNetwork);
-    }
-
     public static abstract class LocationResult{
         public abstract void gotLocation(Location location);
+//        public abstract void cancelTimer(Timer timer1, LocationManager lm, LocationListener locationListenerGps, LocationListener locationListenerNetwork);
     }
-
 }
+
+
+
+//avoid app crashing
+////    public void cancelTimer() {
+////        timer1.cancel();
+////        lm.removeUpdates(locationListenerGps);
+////        lm.removeUpdates(locationListenerNetwork);
+////    }
+//
+//    public static abstract class LocationResult{
+//        public abstract void gotLocation(Location location);
+//        public abstract void cancelTimer(Timer timer1, LocationManager lm);
+//    }
