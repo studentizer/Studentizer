@@ -308,35 +308,34 @@ public class TimetableFragment extends Fragment {
 
 
             //set listview on long item pressed
-            listTrainLeftLstView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    //get item at position (gets whole class)
-                    Train selectedItem = (Train) adapterView.getItemAtPosition(i);
-                    String selectedHour = selectedItem.hour;
-
-                    Toast.makeText(getActivity().getApplicationContext(), "Elo!" + selectedHour, Toast.LENGTH_SHORT).show();
-                }
-            });
+//            listTrainLeftLstView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                    //get item at position (gets whole class)
+//                    Train selectedItem = (Train) adapterView.getItemAtPosition(i);
+//                    String selectedHour = selectedItem.hour;
+//
+//                    Toast.makeText(getActivity().getApplicationContext(), "Elo!" + selectedHour, Toast.LENGTH_SHORT).show();
+//                }
+//            });
 
             listTrainLeftLstView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
                @Override
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l){
-                    Toast.makeText(getActivity().getApplicationContext(), "Long press", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), "Wysyłanie SMS z rozkładem jazdy...", Toast.LENGTH_SHORT).show();
 
-                    //selected stations
-                    String stationFrom = startIdSpinner.getSelectedItem().toString();
-                    String stationTo = endIdSpinner.getSelectedItem().toString();
+                   //selected stations
+                   String stationFrom = startIdSpinner.getSelectedItem().toString();
 
-                    //selected item
-                    Train selectedItem = (Train) adapterView.getItemAtPosition(i);
-                    String selectedTime = selectedItem.hour + ":" + selectedItem.minute;
-                    String direction = selectedItem.tip;
+                   //selected item
+                   Train selectedItem = (Train) adapterView.getItemAtPosition(i);
+                   String selectedTime = selectedItem.hour + ":" + selectedItem.minute;
+                   String direction = selectedItem.tip;
 
-                    //send sms (communication fragment -> activity)
-                   mCallback.sendSms("heheszki");
+                   //send sms (communication fragment -> activity)
+                   mCallback.sendSms("SKM ze stacji " + stationFrom + " w kierunku " + direction + " odjeżdża o " + selectedTime + ".");
 
-                    return true;
+                   return true;
                }
             });
         }
@@ -349,6 +348,26 @@ public class TimetableFragment extends Fragment {
         if(trainsList != null) {
             listTrainRightLstView.setAdapter(adapterRight);
             adapterRight.update(trainsList);
+
+            listTrainRightLstView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
+                @Override
+                public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l){
+                    Toast.makeText(getActivity().getApplicationContext(), "Wysyłanie SMS z rozkładem jazdy...", Toast.LENGTH_SHORT).show();
+
+                    //selected stations
+                    String stationFrom = startIdSpinner.getSelectedItem().toString();
+
+                    //selected item
+                    Train selectedItem = (Train) adapterView.getItemAtPosition(i);
+                    String selectedTime = selectedItem.hour + ":" + selectedItem.minute;
+                    String direction = selectedItem.tip;
+
+                    //send sms (communication fragment -> activity)
+                    mCallback.sendSms("SKM ze stacji " + stationFrom + " w kierunku " + direction + " odjeżdża o " + selectedTime + ".");
+
+                    return true;
+                }
+            });
         }
 
         if(ringProgressDialog.isShowing())

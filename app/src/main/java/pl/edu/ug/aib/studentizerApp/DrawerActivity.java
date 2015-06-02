@@ -31,17 +31,15 @@ import pl.edu.ug.aib.studentizerApp.skmTimetable.data.TrainsList;
 @EActivity(R.layout.activity_drawer)
 public class DrawerActivity extends ActionBarActivity implements TimetableFragment.BgTask {
     Fragment fragment;
-    FragmentManager fragmentManager;
-
     //region implement the Background Task interface
 
     //communication activity -> fragment (also a RestBackgroundTrainLeft method)
     public void updateTrainsLeft(TrainsList trainsList){
         //TODO: use try...catch
-//        TimetableFragment timetableFragment = (TimetableFragment) drawerHandler.getFragment();
-        TimetableFragment timetableFragment = (TimetableFragment) fragment;
-
-
+        TimetableFragment timetableFragment = (TimetableFragment) drawerHandler.getFragment();
+//        fragment = drawerHandler.getCurrentFragment();
+//        TimetableFr = drawerHandler.getFragment();
+//        String x = "stop";
         if(timetableFragment != null){
             timetableFragment.updateTrainsLeft(trainsList);
         }
@@ -49,8 +47,8 @@ public class DrawerActivity extends ActionBarActivity implements TimetableFragme
 
     public void updateTrainsRight(TrainsList trainsList){
         //TODO: use try...catch
-//        TimetableFragment timetableFragment = (TimetableFragment) drawerHandler.getFragment();
-        TimetableFragment timetableFragment = (TimetableFragment) fragment;
+        TimetableFragment timetableFragment = (TimetableFragment) drawerHandler.getFragment();
+//        TimetableFragment timetableFragment = (TimetableFragment) fragment;
 
 
         if(timetableFragment != null){
@@ -148,7 +146,6 @@ public class DrawerActivity extends ActionBarActivity implements TimetableFragme
         }
     }
 
-
     public void sendSms(String str){
         Uri uri = Uri.parse("smsto:");
         Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
@@ -159,6 +156,29 @@ public class DrawerActivity extends ActionBarActivity implements TimetableFragme
 
         startActivityForResult(intent, SMS_REQUEST);
     }
+
+
+
+
+//    @Override
+//    public void onBackPressed(){
+//        fragment = getCurrentFragment(); //fragment before back perssed
+//        //perform usual back action
+//        super.onBackPressed();
+//        fragment = getCurrentFragment(); //fragment after back pressed
+//    }
+
+
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        FragmentManager fm = getSupportFragmentManager();
+//        fm.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+//            @Override
+//            public void onBackStackChanged() {
+//            }
+//        });
+//    }
 
 
 //    @Override

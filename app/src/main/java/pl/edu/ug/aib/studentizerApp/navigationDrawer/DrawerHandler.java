@@ -26,10 +26,12 @@ public class DrawerHandler implements ListView.OnItemClickListener {
 
     private static final int DEFAULT_MENU_ITEM_POSITION = 0;
 
-    private Fragment fragment;
-
     @RootContext
     DrawerActivity drawerActivity;
+
+
+    private Fragment fragment;
+    FragmentManager fragmentManager;
 
     @Bean
     DrawerListAdapter drawerListAdapter;
@@ -87,16 +89,17 @@ public class DrawerHandler implements ListView.OnItemClickListener {
             if (drawerItem == null) {
                 return;
             }
-            FragmentManager fragmentManager = drawerActivity.getSupportFragmentManager();
+            //FragmentManager fragmentManager = drawerActivity.getSupportFragmentManager();
             final Class<? extends Fragment> fragmentClass = drawerItem.getFragmentClass();
             Fragment fragment = fragmentClass.newInstance();
 
             this.fragment = fragment;
 
             //changed for adding backstack
+            fragmentManager = drawerActivity.getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.replace(R.id.content_frame, fragment);
-            transaction.addToBackStack(fragment.toString());
+            transaction.addToBackStack(fragment.getTag());
             transaction.commit();
 
 //            fragmentManager.beginTransaction()
@@ -110,6 +113,15 @@ public class DrawerHandler implements ListView.OnItemClickListener {
 
     public Fragment getFragment(){
         return this.fragment;
+    }
+
+    public Fragment getCurrentFragment(){
+        if (fragmentManager.getBackStackEntryCount() == 0) {
+            return null;
+        }
+        int fragmentId = fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1).getId();
+
+        return fragmentManager.findFragmentById(fragmentId);
     }
 
     public boolean drawerToggleSelected(MenuItem item) {
