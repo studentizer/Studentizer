@@ -120,6 +120,31 @@ public class DrawerActivity extends ActionBarActivity implements TimetableFragme
     //endregion
 
     //region ON ... methods
+    static final int SMS_REQUEST = 1;  // The request code
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == SMS_REQUEST) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                // The user picked a contact.
+                // The Intent's data Uri identifies which contact was selected.
+
+                // Do something with the contact here (bigger example below)
+            }
+        }
+    }
+
+    public void sendSms(String str){
+        Uri uri = Uri.parse("smsto:");
+        Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
+        //intent.putExtra("sms_body", "SKM ze stacji " + stationFrom + " do stacji " + leftTxtView.getText().toString() +
+        //        " odjeżdża o " + selectedTime + ".");
+        intent.putExtra("sms_body", str);
+        //intent.putExtra("exit_on_sent", true);
+        startActivityForResult(intent, SMS_REQUEST);
+    }
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu){
 //        MenuInflater inflater = getMenuInflater();

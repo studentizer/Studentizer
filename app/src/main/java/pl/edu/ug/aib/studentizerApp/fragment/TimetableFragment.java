@@ -66,6 +66,8 @@ public class TimetableFragment extends Fragment {
 
         public void updateTrainsRight(TrainsList trainsList);
         public void getBgTaskRight(int startId, int endIt, int hour);
+
+        public void sendSms(String str);
     }
 
     @Override
@@ -331,13 +333,8 @@ public class TimetableFragment extends Fragment {
                     String selectedTime = selectedItem.hour + ":" + selectedItem.minute;
                     String direction = selectedItem.tip;
 
-                    Uri uri = Uri.parse("smsto:");
-                    Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
-                    intent.putExtra("sms_body", "SKM ze stacji " + stationFrom + " do stacji " + leftTxtView.getText().toString() +
-                                    " odjeżdża o " + selectedTime + ".");
-                    //intent.putExtra("exit_on_sent", true);
-                    startActivity(intent);
-                    //getActivity().finish();
+                    //send sms (communication fragment -> activity)
+                   mCallback.sendSms("heheszki");
 
                     return true;
                }
@@ -399,12 +396,12 @@ public class TimetableFragment extends Fragment {
         super.onPause();
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-
-        geolocationService.cancelTimer(getActivity(), locationResult);
-    }
+//    @Override
+//    public void onDetach() {
+//        super.onDetach();
+//
+//        geolocationService.cancelTimer(getActivity(), locationResult);
+//    }
 
     //endregion
 
