@@ -73,7 +73,7 @@ public class DashboardFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
 
-        geolocationService.cancelTimer(getActivity(), locationResult);
+//        geolocationService.cancelTimer(getActivity(), locationResult);
     }
 
     @Override

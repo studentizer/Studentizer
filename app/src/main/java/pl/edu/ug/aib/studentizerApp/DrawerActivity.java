@@ -1,11 +1,11 @@
 package pl.edu.ug.aib.studentizerApp;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,13 +30,17 @@ import pl.edu.ug.aib.studentizerApp.skmTimetable.data.TrainsList;
 
 @EActivity(R.layout.activity_drawer)
 public class DrawerActivity extends ActionBarActivity implements TimetableFragment.BgTask {
+    Fragment fragment;
+    FragmentManager fragmentManager;
 
     //region implement the Background Task interface
 
     //communication activity -> fragment (also a RestBackgroundTrainLeft method)
     public void updateTrainsLeft(TrainsList trainsList){
         //TODO: use try...catch
-        TimetableFragment timetableFragment = (TimetableFragment) drawerHandler.getFragment();
+//        TimetableFragment timetableFragment = (TimetableFragment) drawerHandler.getFragment();
+        TimetableFragment timetableFragment = (TimetableFragment) fragment;
+
 
         if(timetableFragment != null){
             timetableFragment.updateTrainsLeft(trainsList);
@@ -45,7 +49,9 @@ public class DrawerActivity extends ActionBarActivity implements TimetableFragme
 
     public void updateTrainsRight(TrainsList trainsList){
         //TODO: use try...catch
-        TimetableFragment timetableFragment = (TimetableFragment) drawerHandler.getFragment();
+//        TimetableFragment timetableFragment = (TimetableFragment) drawerHandler.getFragment();
+        TimetableFragment timetableFragment = (TimetableFragment) fragment;
+
 
         if(timetableFragment != null){
             timetableFragment.updateTrainsRight(trainsList);
@@ -122,19 +128,26 @@ public class DrawerActivity extends ActionBarActivity implements TimetableFragme
     //region ON ... methods
     static final int SMS_REQUEST = 1;  // The request code
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Check which request we're responding to
-        if (requestCode == SMS_REQUEST) {
-            // Make sure the request was successful
-            if (resultCode == RESULT_OK) {
-                // The user picked a contact.
-                // The Intent's data Uri identifies which contact was selected.
 
-                // Do something with the contact here (bigger example below)
-            }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch(requestCode){
+            case SMS_REQUEST:
+                if(resultCode == Activity.RESULT_OK){
+
+                }
+
+                break;
+
+            default:
+                break;
         }
     }
+
 
     public void sendSms(String str){
         Uri uri = Uri.parse("smsto:");
@@ -143,8 +156,11 @@ public class DrawerActivity extends ActionBarActivity implements TimetableFragme
         //        " odjeżdża o " + selectedTime + ".");
         intent.putExtra("sms_body", str);
         //intent.putExtra("exit_on_sent", true);
+
         startActivityForResult(intent, SMS_REQUEST);
     }
+
+
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu){
 //        MenuInflater inflater = getMenuInflater();

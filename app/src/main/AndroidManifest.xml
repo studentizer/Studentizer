@@ -24,8 +24,15 @@
             android:configChanges="orientation|screenSize"> <!--hold values in listview while changing screen orientation-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- filter for sending text; accepts SENDTO action with sms URI schemes -->
+            <intent-filter>
+                <action android:name="android.intent.action.SENDTO"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="sms" />
+                <data android:scheme="smsto" />
             </intent-filter>
         </activity>
         <activity android:name=".FragmentActivity_" />
