@@ -3,6 +3,7 @@ package pl.edu.ug.aib.studentizerApp.navigationDrawer;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MenuItem;
@@ -89,11 +90,18 @@ public class DrawerHandler implements ListView.OnItemClickListener {
             FragmentManager fragmentManager = drawerActivity.getSupportFragmentManager();
             final Class<? extends Fragment> fragmentClass = drawerItem.getFragmentClass();
             Fragment fragment = fragmentClass.newInstance();
+
             this.fragment = fragment;
 
-            fragmentManager.beginTransaction()
-                           .replace(R.id.content_frame, fragment)
-                           .commit();
+            //changed for adding backstack
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.content_frame, fragment);
+            transaction.addToBackStack(fragment.toString());
+            transaction.commit();
+
+//            fragmentManager.beginTransaction()
+//                           .replace(R.id.content_frame, fragment)
+//                           .commit();
         } catch (Exception e) {
             Log.e(LOG_TAG, "Error in drawer item selection", e);
         }

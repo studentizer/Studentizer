@@ -4,18 +4,24 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -51,6 +57,7 @@ public class TimetableFragment extends Fragment {
 
     //region communication between fragments-activity (in both ways)
     BgTask mCallback; //call back from DrawerActivity
+    Fragment fragment;
 
     //Container activity must implement that interface
     public interface BgTask{
@@ -115,7 +122,9 @@ public class TimetableFragment extends Fragment {
 
     //region UI controls (buttons, spinners, textviews, etc.
     @ViewById
-    Button refreshBtn;
+    ImageButton refreshBtn;
+    @ViewById(R.id.restoreGpsBtn)
+    ImageButton restoreGpsBtn;
     @ViewById
     Spinner startIdSpinner;
     @ViewById
@@ -272,6 +281,20 @@ public class TimetableFragment extends Fragment {
 
         mCallback.getBgTaskLeft(Integer.parseInt(startId), Integer.parseInt(endId), currentHour);
     }
+
+    @Click
+    void restoreGpsBtn(){
+        //set progress dialog
+        ringProgressDialog.setMessage("Ładowanie rozkładu...");
+        ringProgressDialog.show();
+
+        //show deleted linear layout at the right side
+        rightLayout.setVisibility(View.VISIBLE);
+
+        //run the init method with geolocation service
+        init();
+
+    }
     //endregion
 
     //region BACKGROUND TASK METHODS
@@ -280,6 +303,45 @@ public class TimetableFragment extends Fragment {
             listTrainLeftLstView.setAdapter(adapterLeft);
             adapterLeft.update(trainsList);
             Toast.makeText(getActivity(), "Zaktualizowano rozkład jazdy", Toast.LENGTH_SHORT).show();
+
+
+            //set listview on long item pressed
+            listTrainLeftLstView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    //get item at position (gets whole class)
+                    Train selectedItem = (Train) adapterView.getItemAtPosition(i);
+                    String selectedHour = selectedItem.hour;
+
+                    Toast.makeText(getActivity().getApplicationContext(), "Elo!" + selectedHour, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            listTrainLeftLstView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
+               @Override
+                public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l){
+                    Toast.makeText(getActivity().getApplicationContext(), "Long press", Toast.LENGTH_SHORT).show();
+
+                    //selected stations
+                    String stationFrom = startIdSpinner.getSelectedItem().toString();
+                    String stationTo = endIdSpinner.getSelectedItem().toString();
+
+                    //selected item
+                    Train selectedItem = (Train) adapterView.getItemAtPosition(i);
+                    String selectedTime = selectedItem.hour + ":" + selectedItem.minute;
+                    String direction = selectedItem.tip;
+
+                    Uri uri = Uri.parse("smsto:");
+                    Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
+                    intent.putExtra("sms_body", "SKM ze stacji " + stationFrom + " do stacji " + leftTxtView.getText().toString() +
+                                    " odjeżdża o " + selectedTime + ".");
+                    //intent.putExtra("exit_on_sent", true);
+                    startActivity(intent);
+                    getActivity().finish();
+
+                    return true;
+               }
+            });
         }
 
         if(ringProgressDialog.isShowing())
@@ -337,6 +399,12 @@ public class TimetableFragment extends Fragment {
         super.onPause();
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        geolocationService.cancelTimer(getActivity(), locationResult);
+    }
 
     //endregion
 

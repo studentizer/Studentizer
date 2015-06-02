@@ -36,20 +36,35 @@
         <!--android:inputType="number"-->
         <!--/>-->
 
-        <Button
-            android:id="@+id/refreshBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Wyszukaj rozkład"
+        <LinearLayout
+            android:id="@+id/buttons"
             android:layout_below="@id/endIdSpinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp"
-            />
+            android:layout_marginBottom="5dp">
+            <ImageButton
+                android:id="@+id/refreshBtn"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_forward_black_36dp"
+                />
+
+            <ImageButton
+                android:id="@+id/restoreGpsBtn"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_room_black_36dp"
+                />
+            </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_below="@+id/refreshBtn">
+            android:layout_below="@+id/buttons">
 
             <LinearLayout
                 android:id="@+id/leftLayout"
@@ -69,6 +84,8 @@
                 <ListView
                     android:layout_height="fill_parent"
                     android:layout_width="match_parent"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:id="@+id/listTrainLeftLstView"
                     />
             </LinearLayout>

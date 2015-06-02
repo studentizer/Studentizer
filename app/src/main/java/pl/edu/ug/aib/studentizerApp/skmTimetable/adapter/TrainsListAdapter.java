@@ -1,6 +1,7 @@
 package pl.edu.ug.aib.studentizerApp.skmTimetable.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -57,7 +58,16 @@ public class TrainsListAdapter  extends BaseAdapter {
             trainItemView = (TrainItemView) convertView;
         }
 
+        if(position % 2 == 0) {
+            trainItemView.setBackgroundColor(Color.parseColor("#E3F2FD"));
+        } else{
+            trainItemView.setBackgroundColor(Color.WHITE);
+        }
+
+
+
         trainItemView.bind(getItem(position));
+
 
         return trainItemView;
     }
