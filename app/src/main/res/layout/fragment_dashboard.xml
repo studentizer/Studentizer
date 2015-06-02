@@ -1,65 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<RelativeLayout
+    android:id="@+id/layoutMain"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
     <RelativeLayout
-        android:id="@+id/layoutMain"
+        android:id="@+id/layoutRoboczy1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:padding="20dp"
+        android:background="@drawable/tlodashboard1"
+        android:layout_marginBottom="10dp"
         xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <RelativeLayout
-            android:id="@+id/layoutRoboczy1"
-            android:layout_width="fill_parent"
+        <AnalogClock
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:background="@drawable/tlodashboard1"
-            android:layout_marginBottom="10dp"
-            xmlns:android="http://schemas.android.com/apk/res/android">
+            android:id="@+id/txtClock"
+            android:textSize="50dp"
+            android:layout_centerHorizontal="true"
+            android:format24Hour="true" />
 
-            <AnalogClock
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/txtClock"
-                android:textSize="50dp"
-                android:layout_centerHorizontal="true"
-                android:format24Hour="true" />
+        <TextView
+            android:id="@+id/stanMiasto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Miasto"
+            android:textAllCaps="true"
+            android:textStyle="bold"/>
+
+        <LinearLayout
+            android:id="@+id/linearPogoda"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/stanMiasto">
 
             <TextView
-                android:id="@+id/stanMiasto"
-                android:layout_width="wrap_content"
+                android:id="@+id/stanPogoda"
+                android:layout_below="@id/stanMiasto"
+                android:layout_width="0dp"
+                android:layout_weight="0.8"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Miasto"
-                android:textAllCaps="true"
-                android:textStyle="bold"/>
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="pogoda" />
 
-            <LinearLayout
-                android:id="@+id/linearPogoda"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/stanC"
+                android:text="PIEKŁO"
+                android:layout_alignParentRight ="true"
+                android:layout_width="0dp"
+                android:layout_weight="0.2"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/stanMiasto">
+                android:textAppearance="?android:attr/textAppearanceSmall"/>
 
-                <TextView
-                    android:id="@+id/stanPogoda"
-                    android:layout_below="@id/stanMiasto"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.8"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="pogoda" />
+        </LinearLayout>
 
-                <TextView
-                    android:id="@+id/stanC"
-                    android:text="PIEKŁO"
-                    android:layout_alignParentRight ="true"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.2"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-             </LinearLayout>
-
-       </RelativeLayout>
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/layoutRoboczy2"
