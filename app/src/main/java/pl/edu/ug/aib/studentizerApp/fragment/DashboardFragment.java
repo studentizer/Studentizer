@@ -41,7 +41,7 @@ public class DashboardFragment extends Fragment {
 
         locationResult = new GeolocationService.LocationResult(){
             @Override
-        public void gotLocation(Location location) {
+            public void gotLocation(Location location) {
                 lat = location.getLatitude();
                 lon = location.getLongitude();
 
