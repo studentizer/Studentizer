@@ -337,7 +337,7 @@ public class TimetableFragment extends Fragment {
                                     " odjeżdża o " + selectedTime + ".");
                     //intent.putExtra("exit_on_sent", true);
                     startActivity(intent);
-                    getActivity().finish();
+                    //getActivity().finish();
 
                     return true;
                }
