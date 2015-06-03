@@ -11,6 +11,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import pl.edu.ug.aib.studentizerApp.Wallet.data.Transaction;
 import pl.edu.ug.aib.studentizerApp.Wallet.data.Wallet;
 import pl.edu.ug.aib.studentizerApp.userData.Data.UserList;
+import pl.edu.ug.aib.studentizerApp.userData.Data.UserLogout;
 
 
 @Rest(rootUrl = "https://dsp-patryk-tolodziecki-45894.cloud.dreamfactory.com:443/rest",
@@ -29,4 +30,7 @@ public interface WalletRestClient extends RestClientHeaders {
     @RequiresHeader({"X-Dreamfactory-Session-Token", "X-Dreamfactory-Application-Name"})
     @Post("/db/portfel/")
     void addWalletEntry(Transaction transaction);
+
+    @Delete("/user/session")
+    UserLogout logout();
 }

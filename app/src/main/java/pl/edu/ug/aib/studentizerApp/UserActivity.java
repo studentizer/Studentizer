@@ -1,7 +1,6 @@
 package pl.edu.ug.aib.studentizerApp;
 
-import android.app.ProgressDialog;
-import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -13,116 +12,101 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.NonConfigurationInstance;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 
+import pl.edu.ug.aib.studentizerApp.fragment.LoginFragment;
+import pl.edu.ug.aib.studentizerApp.fragment.LoginFragment_;
+import pl.edu.ug.aib.studentizerApp.fragment.RegisterFragment;
+import pl.edu.ug.aib.studentizerApp.fragment.RegisterFragment_;
+import pl.edu.ug.aib.studentizerApp.fragment.UserFragment;
+import pl.edu.ug.aib.studentizerApp.fragment.UserFragment_;
 import pl.edu.ug.aib.studentizerApp.userData.Data.EmailAndPassword;
 import pl.edu.ug.aib.studentizerApp.userData.Data.User;
-import pl.edu.ug.aib.studentizerApp.userData.restBackgroundTasks.RestLoginBackgroundTask;
-import pl.edu.ug.aib.studentizerApp.userData.restBackgroundTasks.RestRegisterBackgroundTask;
+import pl.edu.ug.aib.studentizerApp.userData.Data.UserRegister;
+import pl.edu.ug.aib.studentizerApp.userData.RestLoginBackgroundTask;
+import pl.edu.ug.aib.studentizerApp.userData.UserPreferences_;
 
 /**
  * Created by Patryk on 2015-06-02.
  */
 @EActivity(R.layout.activity_user)
-public class UserActivity extends ActionBarActivity {
+public class UserActivity extends ActionBarActivity implements UserFragment.OnUserFragmentCommunicationListener,
+        LoginFragment.OnLoginFragmentCommunicationListener,
+        RegisterFragment.OnRegisterFragmentCommunicationListener {
 
-    @Extra("User")
-    User user;
-
+    private static final String INTRO_FRAGMENT_TAG = "user";
+    @Pref
+    UserPreferences_ preferences;
     @Bean
     @NonConfigurationInstance
-    RestLoginBackgroundTask restLoginBackgroundTask;
+    RestLoginBackgroundTask restBackgroundTask;
 
-    @Bean
-    @NonConfigurationInstance
-    RestRegisterBackgroundTask restRegisterBackgroundTask;
-
-
-    @ViewById
-    EditText email;
-
-    @ViewById
-    EditText email2;
-
-    @ViewById
-    EditText password;
-
-    @ViewById
-    EditText password2;
-
-    ProgressDialog ringProgressDialog;
+    FragmentManager fragmentManager;
 
     @AfterViews
-    void init() {
-    }
-
-    @Click(R.id.login)
-    void loginClicked()    {
-        ringProgressDialog = new ProgressDialog(this);
-        ringProgressDialog.setMessage("Logowanie...");
-        ringProgressDialog.setIndeterminate(true);
-        ringProgressDialog.show();
+    void init(){
+        //load initial fragment
+        fragmentManager = this.getSupportFragmentManager();
+        UserFragment userFragment = new UserFragment_();
+        fragmentManager.beginTransaction()
+                .add(R.id.contentFrame, userFragment, INTRO_FRAGMENT_TAG)
+                .commit();
         EmailAndPassword emailAndPassword = new EmailAndPassword();
-        emailAndPassword.email = email.getText().toString(); //"example@example.com";
-        emailAndPassword.password = password.getText().toString(); //"test00";
+        emailAndPassword.email = preferences.email().get();
+        emailAndPassword.password = preferences.password().get();
+        //if user credentials already saved in preferences, try to log in
+        if(!emailAndPassword.email.isEmpty() && !emailAndPassword.password.isEmpty()){
+            onLogin(emailAndPassword);
+        }
 
-        if(email.getText().length()==0||password.getText().length()==0)
-        {
-            ringProgressDialog.dismiss();
-            Toast.makeText(this, "Wype³nij wszystkie pola!", Toast.LENGTH_LONG).show();
-        }
-        else{
-            restLoginBackgroundTask.login(emailAndPassword);
-        }
+
+    }
+    //IntroFragment communication
+    @Override
+    public void onLoginClicked() {
+        fragmentManager.beginTransaction()
+                .replace(R.id.contentFrame, new LoginFragment_())
+                .addToBackStack(null)
+                .commit();
+    }
+    //IntroFragment communication
+    @Override
+    public void onRegisterClicked() {
+        fragmentManager.beginTransaction()
+                .replace(R.id.contentFrame, new RegisterFragment_())
+                .addToBackStack(null)
+                .commit();
+    }
+    //LoginFragment communication
+    @Override
+    public void onLogin(EmailAndPassword emailAndPassword) {
+        restBackgroundTask.login(emailAndPassword);
+    }
+    //RegisterFragment communication
+    @Override
+    public void onRegister(UserRegister userRegister) {
+        restBackgroundTask.register(userRegister);
     }
 
-    @Click(R.id.register)
-    void registerClicked() {
-        ringProgressDialog = new ProgressDialog(this);
-        ringProgressDialog.setMessage("Rejestrowanie...");
-        ringProgressDialog.setIndeterminate(true);
-        ringProgressDialog.show();
-        EmailAndPassword emailAndPassword = new EmailAndPassword();
-        emailAndPassword.email = email2.getText().toString();
-        emailAndPassword.password = password2.getText().toString();
-
-        if (email2.getText().length()==0||password2.getText().length()==0)
-        {
-            ringProgressDialog.dismiss();
-            Toast.makeText(this, "Wype³nij wszystkie pola!", Toast.LENGTH_LONG).show();
-        }
-        else
-        {
-            restRegisterBackgroundTask.register(emailAndPassword);}
-    }
-
-    public void loginSuccess(User user) {
-        ringProgressDialog.dismiss();
-        Intent intent = new Intent();
-        intent.putExtra("user", user);
-        setResult(RESULT_OK, intent);
+    //RestLoginBackgroundTask communication
+    public void loginSuccess(User user, String password){
+        //updates shared preferences with user data
+        preferences.id().put(user.id);
+        preferences.sessionId().put(user.sessionId);
+        preferences.firstName().put(user.firstName);
+        preferences.lastName().put(user.lastName);
+        preferences.displayName().put(user.displayName);
+        preferences.email().put(user.email);
+        preferences.password().put(password);
         Toast.makeText(this, "Zalogowano!", Toast.LENGTH_LONG).show();
-        this.finish();
+        //starts main activity
+        DrawerActivity_.intent(this).start();
+        finish();
     }
-
-    public void showErrorLogin(Exception e) {
-        ringProgressDialog.dismiss();
+    //Invoked after login/register exception in rest background task
+    public void showError(Exception e){
         Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-        e.printStackTrace();
+
     }
 
-    public void registerSuccess(User user) {
-        ringProgressDialog.dismiss();
-        Intent intent = new Intent();
-        intent.putExtra("user", user);
-        setResult(RESULT_OK, intent);
-        Toast.makeText(this, "Zarejestrowano!", Toast.LENGTH_LONG).show();
-        DrawerActivity_.intent(this).user(user).start();
-        this.finish();
-    }
-
-    public void showErrorRegister(Exception e) {
-        ringProgressDialog.dismiss();
-        Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-        e.printStackTrace();
-    }
 }

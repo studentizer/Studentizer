@@ -11,6 +11,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import pl.edu.ug.aib.studentizerApp.userData.Data.EmailAndPassword;
 import pl.edu.ug.aib.studentizerApp.userData.Data.User;
 import pl.edu.ug.aib.studentizerApp.userData.Data.UserList;
+import pl.edu.ug.aib.studentizerApp.userData.Data.UserRegister;
 
 
 @Rest(rootUrl = "https://dsp-patryk-tolodziecki-45894.cloud.dreamfactory.com:443/rest",
@@ -22,5 +23,10 @@ public interface UserDataRestClient extends RestClientHeaders {
     User login(EmailAndPassword emailAndPassword);
 
     @Post("/user/register/?login=true")
-    User register(EmailAndPassword emailAndPassword);
+    User register(UserRegister userData);
+
+
+//
+//    @Get("/user/session")
+//    User getSession();
 }

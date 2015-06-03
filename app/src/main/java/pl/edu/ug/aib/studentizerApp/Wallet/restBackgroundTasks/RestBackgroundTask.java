@@ -15,6 +15,7 @@ import pl.edu.ug.aib.studentizerApp.Wallet.data.Transaction;
 import pl.edu.ug.aib.studentizerApp.Wallet.data.Wallet;
 import pl.edu.ug.aib.studentizerApp.userData.Data.User;
 import pl.edu.ug.aib.studentizerApp.userData.Data.UserList;
+import pl.edu.ug.aib.studentizerApp.userData.Data.UserLogout;
 
 @EBean
 public class RestBackgroundTask {
@@ -64,11 +65,30 @@ public class RestBackgroundTask {
         }
     }
 
+
+
     @UiThread
         void publishResult(Wallet wallet) {
 
         activity.updateSucess(wallet);
         }
+
+    @Background
+    public void logout (String sessionId){
+        try {
+            restClient.setHeader("X-Dreamfactory-Application-Name", "netify");
+            restClient.setHeader("X-Dreamfactory-Session-Token", sessionId);
+            UserLogout userLogout = restClient.logout();
+            publishLogoutResult(userLogout.success);
+        } catch (Exception e) {
+            publishError(e);
+        }
+    }
+
+    @UiThread
+    void publishLogoutResult (Boolean success){
+        activity.onLogout(success);
+    }
 
 
     @UiThread

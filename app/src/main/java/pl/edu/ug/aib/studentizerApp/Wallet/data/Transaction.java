@@ -14,7 +14,6 @@ public class Transaction implements Serializable, Comparable<Transaction>{
     public Integer id_transakcji;
     public String data_transakcji;
     public Integer ownerId;
-    public String opis_transakcji;
 
     @JsonIgnore
     public String displayName;

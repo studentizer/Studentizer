@@ -20,6 +20,7 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.NonConfigurationInstance;
 import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.util.List;
 
@@ -28,6 +29,7 @@ import pl.edu.ug.aib.studentizerApp.Wallet.data.Wallet;
 import pl.edu.ug.aib.studentizerApp.Wallet.restBackgroundTasks.RestBackgroundTask;
 import pl.edu.ug.aib.studentizerApp.Wallet.restBackgroundTasks.RestWalletBackgroundTask;
 import pl.edu.ug.aib.studentizerApp.fragment.DashboardFragment;
+import pl.edu.ug.aib.studentizerApp.fragment.LogoutFragment;
 import pl.edu.ug.aib.studentizerApp.fragment.TimetableFragment;
 import pl.edu.ug.aib.studentizerApp.fragment.WalletFragment;
 import pl.edu.ug.aib.studentizerApp.navigationDrawer.DrawerHandler;
@@ -35,12 +37,17 @@ import pl.edu.ug.aib.studentizerApp.skmTimetable.backgroundTasks.RestBackgroundT
 import pl.edu.ug.aib.studentizerApp.skmTimetable.backgroundTasks.RestBackgroundTrainRight;
 import pl.edu.ug.aib.studentizerApp.skmTimetable.data.TrainsList;
 import pl.edu.ug.aib.studentizerApp.userData.Data.User;
+import pl.edu.ug.aib.studentizerApp.userData.UserPreferences_;
 
 @EActivity(R.layout.activity_drawer)
-public class DrawerActivity extends ActionBarActivity implements TimetableFragment.BgTask, WalletFragment.BgTask {
+public class DrawerActivity extends ActionBarActivity implements TimetableFragment.BgTask, WalletFragment.BgTask, LogoutFragment.OnLogoutFragmentCommunicationListener,
+    DashboardFragment.OnDashboardFragmentCommunicationListener{
 
-    @Extra("User")
+    @Extra
     User user;
+
+    @Pref
+    UserPreferences_ preferences;
 
     Fragment fragment;
     //region implement the Background Task interface
@@ -221,7 +228,7 @@ public class DrawerActivity extends ActionBarActivity implements TimetableFragme
     @NonConfigurationInstance
     RestWalletBackgroundTask restWalletBackgroundTask;
 
-    public void updateWallet(User user){
+       public void updateWallet(User user){
         restBackgroundTask.getWallet(user);
     }
 
@@ -257,10 +264,30 @@ public class DrawerActivity extends ActionBarActivity implements TimetableFragme
     }
 
     //get user
-    @OnActivityResult(1)
-    protected void onActivityResult(int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            user = (User)data.getSerializableExtra("user");
+    @Override
+    public User getUser() {
+        return user;
+    }
+
+
+    public void onLogout(Boolean success){
+        if(success) {
+            preferences.id().put(0);
+            preferences.sessionId().put("");
+            preferences.email().put("");
+            preferences.password().put("");
+            preferences.firstName().put("");
+            preferences.lastName().put("");
+            preferences.displayName().put("");
+            Toast.makeText(this, "Wylogowano!", Toast.LENGTH_LONG).show();
+            UserActivity_.intent(this).start();
+            finish();
         }
+    }
+
+    //Logout communication
+    @Override
+    public void logout(){
+        restBackgroundTask.logout(preferences.sessionId().get());
     }
 }

@@ -47,6 +47,7 @@ public class WalletFragment extends Fragment {
     public interface BgTask{
         public void updateWallet(User user);
         public void addTransaction(User user, Transaction transaction);
+        public User getUser();
     }
 
     @Override
@@ -71,8 +72,7 @@ public class WalletFragment extends Fragment {
     @AfterViews
     void init() {
         getActivity().setTitle(R.string.title_wallet);
-        Intent intent = new Intent();
-        intent.getExtras();
+        mCallback.getUser();
         lista = new ArrayList<Transaction>();
         adapter.setList(lista);
         listaoperacji.setAdapter(adapter);
@@ -148,7 +148,6 @@ public class WalletFragment extends Fragment {
     public void addSuccess(Transaction transaction) {
         ringProgressDialog.dismiss();
         Toast.makeText(getActivity(), "Dodano transakcjê!", Toast.LENGTH_LONG).show();
-        mCallback.updateWallet(user);
     }
 
 }

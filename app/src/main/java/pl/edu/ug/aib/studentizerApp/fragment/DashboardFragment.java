@@ -1,5 +1,6 @@
 package pl.edu.ug.aib.studentizerApp.fragment;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.location.Location;
@@ -22,20 +23,22 @@ import org.w3c.dom.Text;
 import pl.edu.ug.aib.studentizerApp.R;
 import pl.edu.ug.aib.studentizerApp.UserActivity;
 import pl.edu.ug.aib.studentizerApp.UserActivity_;
+import pl.edu.ug.aib.studentizerApp.Wallet.data.Transaction;
 import pl.edu.ug.aib.studentizerApp.skmTimetable.gps.GeolocationService;
 import pl.edu.ug.aib.studentizerApp.skmTimetable.gps.GeolocationUtilities;
+import pl.edu.ug.aib.studentizerApp.userData.Data.EmailAndPassword;
 import pl.edu.ug.aib.studentizerApp.userData.Data.User;
+import pl.edu.ug.aib.studentizerApp.userData.UserPreferences;
 
 @EFragment(R.layout.fragment_dashboard)
 public class DashboardFragment extends Fragment {
+
+    OnDashboardFragmentCommunicationListener listener;
 
     User user;
 
     @ViewById
     TextView hello;
-
-    @ViewById
-    Button userLogin;
 
     @ViewById(R.id.stanMiasto)
     TextView stanMiasto;
@@ -54,18 +57,13 @@ public class DashboardFragment extends Fragment {
 
     @AfterViews
     void init() {
-
         getActivity().setTitle(R.string.title_dashboard);
-        if(user==null){
+        listener.getUser();
+        if (user == null) {
             hello.setText("Witaj nieznajomy!");
-            userLogin.setVisibility(View.VISIBLE);
-        }
-
-        else {
+        } else {
             hello.setText("Witaj " + user.displayName + "!");
-            userLogin.setVisibility(View.INVISIBLE);
         }
-
           locationResult = new GeolocationService.LocationResult(){
             @Override
             public void gotLocation(Location location){
@@ -81,10 +79,15 @@ public class DashboardFragment extends Fragment {
 
     }
 
-    @Click(R.id.userLogin)//tutaj?
-    void userLoginClicked(){
-        Intent getUserData = new Intent(getActivity(), UserActivity_.class);
-        startActivityForResult(getUserData, 1);
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try{
+            listener = (OnDashboardFragmentCommunicationListener) activity;
+        }
+        catch (ClassCastException e){
+            throw new ClassCastException(activity.toString() + " must implement OnDashboardFragmentCommunicationListener");
+        }
     }
 
     //avoid app-crashing during getting the GPS location
@@ -107,9 +110,10 @@ public class DashboardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-
-
-
         return inflater.inflate(R.layout.fragment_dashboard, container, false);
+    }
+
+    public interface OnDashboardFragmentCommunicationListener {
+        public User getUser();
     }
 }

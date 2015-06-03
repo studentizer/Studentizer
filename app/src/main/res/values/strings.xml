@@ -24,6 +24,7 @@
     <string name="title_timetable">Rozkład jazdy SKM</string>
     <string name="title_todo">Lista TO DO</string>
     <string name="title_wallet">Portfel</string>
+    <string name="title_logout">Wyloguj się</string>
     <string name="drawer_open">Otwórz</string>
     <string name="drawer_close">Zamknij</string>
 
