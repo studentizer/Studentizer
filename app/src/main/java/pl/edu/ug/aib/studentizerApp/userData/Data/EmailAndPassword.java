@@ -8,5 +8,5 @@ import java.io.Serializable;
 public class EmailAndPassword implements Serializable {
 
     public String email;
-    public String password;
+    public String password;//
 }

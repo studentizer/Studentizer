@@ -54,15 +54,17 @@ public class LoginFragment extends Fragment{
     @Click(R.id.login)
     void loginClicked(){
         ringProgressDialog.show();
-        ringProgressDialog.setMessage("Logowanie");
+        ringProgressDialog.setMessage("Logowanie...");
         ringProgressDialog.setIndeterminate(true);
         //email and password verification
         if(email.getText().toString().isEmpty()){
-            Toast.makeText(getActivity(), "Wpisz email!", Toast.LENGTH_LONG).show();
+            ringProgressDialog.dismiss();
+            Toast.makeText(getActivity(), R.string.missEmail, Toast.LENGTH_LONG).show();
             return;
         }
         if(password.getText().toString().isEmpty()){
-            Toast.makeText(getActivity(),"Wpisz has³o!", Toast.LENGTH_LONG).show();
+            ringProgressDialog.dismiss();
+            Toast.makeText(getActivity(),R.string.misspass, Toast.LENGTH_LONG).show();
             return;
         }
         //creates object with login data and passes to activity

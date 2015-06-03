@@ -109,4 +109,6 @@ public class UserActivity extends ActionBarActivity implements UserFragment.OnUs
 
     }
 
+    //Zrobiæ automatyczne przejœcie do DrawerActivity je¿eli zalogowany lub poukrywaæ kilka elementów.
+
 }

@@ -18,7 +18,7 @@ public class UserFragment extends Fragment{
 
     @AfterViews
     void init(){
-
+//tutaj cos?
     }
 
     @Override

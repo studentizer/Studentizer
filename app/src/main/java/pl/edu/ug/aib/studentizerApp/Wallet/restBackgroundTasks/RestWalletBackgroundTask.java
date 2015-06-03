@@ -5,12 +5,14 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.rest.RestService;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import pl.edu.ug.aib.studentizerApp.DrawerActivity;
 import pl.edu.ug.aib.studentizerApp.Wallet.WalletRestClient;
 import pl.edu.ug.aib.studentizerApp.Wallet.data.Transaction;
 import pl.edu.ug.aib.studentizerApp.Wallet.data.Wallet;
 import pl.edu.ug.aib.studentizerApp.userData.Data.User;
+import pl.edu.ug.aib.studentizerApp.userData.UserPreferences_;
 
 @EBean
 public class RestWalletBackgroundTask {
@@ -21,11 +23,14 @@ public class RestWalletBackgroundTask {
     @RestService
     WalletRestClient restClient;
 
+    @Pref
+    UserPreferences_ preferences;
+
     @Background
-    public void addWalletEntry(User user, Transaction transaction) {
+    public void addWalletEntry(Transaction transaction) {
         try {
             restClient.setHeader("X-Dreamfactory-Application-Name", "aib-android");
-            restClient.setHeader("X-Dreamfactory-Session-Token", user.sessionId);
+            restClient.setHeader("X-Dreamfactory-Session-Token", preferences.sessionId().get());
             restClient.addWalletEntry(transaction);
             publishResult(transaction);
         } catch (Exception e) {

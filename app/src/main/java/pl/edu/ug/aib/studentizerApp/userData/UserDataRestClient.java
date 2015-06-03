@@ -26,7 +26,7 @@ public interface UserDataRestClient extends RestClientHeaders {
     User register(UserRegister userData);
 
 
-//
-//    @Get("/user/session")
-//    User getSession();
+
+    @Get("/user/session")
+    User getSession();//potrzebne?
 }

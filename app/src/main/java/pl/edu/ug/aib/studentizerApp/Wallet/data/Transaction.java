@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class Transaction implements Serializable, Comparable<Transaction>{
 
     public String nazwa_transakcji;
-    public double wartosc_transakcji;
+    public double wartosc_transakcji;//nie String!
     public Integer id_transakcji;
     public String data_transakcji;
     public Integer ownerId;

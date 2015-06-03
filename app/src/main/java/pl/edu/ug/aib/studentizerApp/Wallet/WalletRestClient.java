@@ -1,5 +1,7 @@
 package pl.edu.ug.aib.studentizerApp.Wallet;
 
+import android.util.Log;
+
 import org.androidannotations.annotations.rest.Delete;
 import org.androidannotations.annotations.rest.Get;
 import org.androidannotations.annotations.rest.Post;
@@ -24,8 +26,8 @@ public interface WalletRestClient extends RestClientHeaders {
     UserList getUserId(String id);
 
     @RequiresHeader({"X-Dreamfactory-Application-Name", "X-Dreamfactory-Session-Token"})
-    @Get("/db/portfel/")
-    Wallet getWallet();
+    @Get("/db/portfel?filter={filter}")
+    Wallet getWallet(String filter);
 
     @RequiresHeader({"X-Dreamfactory-Session-Token", "X-Dreamfactory-Application-Name"})
     @Post("/db/portfel/")

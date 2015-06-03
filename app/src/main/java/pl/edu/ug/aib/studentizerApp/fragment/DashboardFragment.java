@@ -18,6 +18,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.w3c.dom.Text;
 
 import pl.edu.ug.aib.studentizerApp.R;
@@ -29,11 +30,15 @@ import pl.edu.ug.aib.studentizerApp.skmTimetable.gps.GeolocationUtilities;
 import pl.edu.ug.aib.studentizerApp.userData.Data.EmailAndPassword;
 import pl.edu.ug.aib.studentizerApp.userData.Data.User;
 import pl.edu.ug.aib.studentizerApp.userData.UserPreferences;
+import pl.edu.ug.aib.studentizerApp.userData.UserPreferences_;
 
 @EFragment(R.layout.fragment_dashboard)
 public class DashboardFragment extends Fragment {
 
     OnDashboardFragmentCommunicationListener listener;
+
+    @Pref
+    UserPreferences_ preferences;
 
     User user;
 
@@ -59,11 +64,8 @@ public class DashboardFragment extends Fragment {
     void init() {
         getActivity().setTitle(R.string.title_dashboard);
         listener.getUser();
-        if (user == null) {
-            hello.setText("Witaj nieznajomy!");
-        } else {
-            hello.setText("Witaj " + user.displayName + "!");
-        }
+        getUserInfo();
+
           locationResult = new GeolocationService.LocationResult(){
             @Override
             public void gotLocation(Location location){
@@ -77,6 +79,14 @@ public class DashboardFragment extends Fragment {
 
         };
 
+    }
+
+    public void getUserInfo(){
+        if (preferences.sessionId().get().isEmpty()) {
+            hello.setText("Witaj nieznajomy!");
+        } else {
+            hello.setText("Witaj " + preferences.displayName().get() + "!");
+        }
     }
 
     @Override

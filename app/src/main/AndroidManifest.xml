@@ -37,8 +37,6 @@
         </activity>
         <activity android:name=".FragmentActivity_" />
         <activity android:name=".DrawerActivity_" />
-        <!--<activity android:name=".DrawerActivity_" />-->
-
     </application>
 
 </manifest>

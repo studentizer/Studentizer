@@ -7,6 +7,7 @@ import org.androidannotations.annotations.sharedpreferences.SharedPref;
 @SharedPref(value = SharedPref.Scope.APPLICATION_DEFAULT)
 public interface UserPreferences {
 
+    //UserData
     @DefaultInt(0)
     int id();
     @DefaultString("")

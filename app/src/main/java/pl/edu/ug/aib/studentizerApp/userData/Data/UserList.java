@@ -9,5 +9,5 @@ import java.util.List;
 public class UserList {
 
     @JsonProperty("record")
-    public List<User> records = new ArrayList<User>();//
+    public List<User> records = new ArrayList<User>();
 }

@@ -1,12 +1,16 @@
 package pl.edu.ug.aib.studentizerApp.Wallet.restBackgroundTasks;
 
+import android.util.Log;
+
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.rest.RestService;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import pl.edu.ug.aib.studentizerApp.DrawerActivity;
@@ -16,9 +20,15 @@ import pl.edu.ug.aib.studentizerApp.Wallet.data.Wallet;
 import pl.edu.ug.aib.studentizerApp.userData.Data.User;
 import pl.edu.ug.aib.studentizerApp.userData.Data.UserList;
 import pl.edu.ug.aib.studentizerApp.userData.Data.UserLogout;
+import pl.edu.ug.aib.studentizerApp.userData.UserPreferences;
+import pl.edu.ug.aib.studentizerApp.userData.UserPreferences_;
 
 @EBean
 public class RestBackgroundTask {
+
+
+    @Pref
+    UserPreferences_ preferences;
 
     @RootContext
     DrawerActivity activity;
@@ -27,39 +37,18 @@ public class RestBackgroundTask {
     WalletRestClient restClient;
 
     @Background
-    public void getWallet(User user) {
+    public void getWallet() {
         try {
+            String userID = String.valueOf(preferences.id().get());
+            String sesja = preferences.sessionId().get();
             restClient.setHeader("X-Dreamfactory-Application-Name", "aib-android");
-            restClient.setHeader("X-Dreamfactory-Session-Token", user.sessionId);
-            Wallet wallet = restClient.getWallet();
-            if (user != null) {
-                List<Integer> list = new ArrayList<Integer>();
-                String userIds = null;//get unique IDs
-                for (Transaction transaction : wallet.records) {
-                    if (!list.contains(transaction.ownerId)) {
-                        list.add(transaction.ownerId);
-                        userIds += transaction.ownerId + ",";
-                    }
-                }
-
-                userIds += 3 + ",";
-                //String preparation
-                String ids = userIds.substring(0, userIds.length()-1);
-
-                //get
-                restClient.setHeader("X-Dreamfactory-Application-Name", "aib-android");
-                restClient.setHeader("X-Dreamfactory-Session-Token", user.sessionId);
-                UserList userList = restClient.getUserId(ids);
-                for (Transaction transaction : wallet.records) {
-                    for (int i = 0; i < userList.records.size(); i++) {
-                        if (userList.records.get(i).id.equals(transaction.ownerId))
-                            transaction.displayName = userList.records.get(i).displayName;
-                    }
-                }
+            restClient.setHeader("X-Dreamfactory-Session-Token", sesja);
+            Wallet wallet = restClient.getWallet("ownerId="+userID);
                 publishResult(wallet);
-            }
 
             }
+
+
         catch (Exception e) {
             publishError(e);
         }
@@ -70,13 +59,13 @@ public class RestBackgroundTask {
     @UiThread
         void publishResult(Wallet wallet) {
 
-        activity.updateSucess(wallet);
+        activity.updateSuccess(wallet);
         }
 
     @Background
     public void logout (String sessionId){
         try {
-            restClient.setHeader("X-Dreamfactory-Application-Name", "netify");
+            restClient.setHeader("X-Dreamfactory-Application-Name", "aib-android");
             restClient.setHeader("X-Dreamfactory-Session-Token", sessionId);
             UserLogout userLogout = restClient.logout();
             publishLogoutResult(userLogout.success);

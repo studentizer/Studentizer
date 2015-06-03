@@ -27,4 +27,5 @@ public class LogoutFragment extends Fragment {
         public interface OnLogoutFragmentCommunicationListener{
             public void logout();
         }
+    //
     }

@@ -18,6 +18,6 @@ public class UserRegister implements Serializable {
     public String lastName;
     public String email;
 
-    public String password;
+    public String password;//
 
 }

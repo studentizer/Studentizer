@@ -67,11 +67,10 @@ public class Adapter extends BaseAdapter {
     }
 
     public void update(Wallet wallet) {
-
+        lista.clear();
         lista.addAll(wallet.records);
         Collections.sort(lista);
-        notifyDataSetChanged();//dobrze?
-
+        notifyDataSetChanged();
     }
 
 }

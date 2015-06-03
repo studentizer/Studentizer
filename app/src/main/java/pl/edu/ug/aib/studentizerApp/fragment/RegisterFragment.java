@@ -56,17 +56,19 @@ public class RegisterFragment extends Fragment {
     @Click(R.id.register)
     void registerClicked(){
         ringProgressDialog.show();
-        ringProgressDialog.setMessage("Logowanie");
+        ringProgressDialog.setMessage("Logowanie...");
         ringProgressDialog.setIndeterminate(true);
         //registration data verification
-        if(email.getText().toString().trim().isEmpty()){
-            Toast.makeText(getActivity(), "Wpisz email!", Toast.LENGTH_LONG).show();
+        if(email.getText().toString().isEmpty()){
+            ringProgressDialog.dismiss();
+            Toast.makeText(getActivity(), R.string.missEmail, Toast.LENGTH_LONG).show();
             return;
         }
         //password verification
         String password = passworD.getText().toString();
         if(password.isEmpty()){
-            Toast.makeText(getActivity(), "Wpisz has³o!", Toast.LENGTH_LONG).show();
+            ringProgressDialog.dismiss();
+            Toast.makeText(getActivity(), R.string.misspass, Toast.LENGTH_LONG).show();
             return;
         }
         //creates object with registration data and passes to activity

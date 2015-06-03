@@ -11,17 +11,37 @@
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:orientation="vertical"
-            android:padding="15dp">
+            android:padding="15dp"
+            android:weightSum="1">
+            <ImageView
+                android:layout_width="348dp"
+                android:layout_height="150sp"
+                android:background="@drawable/logo"
+                android:layout_weight="0.80"
+                android:layout_marginBottom="15sp"
+                android:layout_gravity="center_horizontal" />
             <TextView
+                android:id="@+id/loginInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="Witaj! Aby korzystać z pełnej funkcjonalności aplikacji trzeba się zalogować. Nie masz konta? Możesz je założyć."/>
+                android:textSize="20sp"
+                android:text="Witaj! Aby korzystać z pełnej funkcjonalności aplikacji trzeba się zalogować."
+                android:layout_marginBottom="10sp"
+                />
             <Button
                 android:id="@+id/loginButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Zaloguj się" />
+                android:text="Zaloguj się"
+                android:layout_marginBottom="10sp"/>
+
+            <TextView
+                android:id="@+id/registerInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="Nie masz konta? Załóż je!"
+                android:layout_marginBottom="10sp"/>
             <Button
                 android:id="@+id/registerButton"
                 android:layout_width="match_parent"

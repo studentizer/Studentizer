@@ -36,7 +36,7 @@ public class RestLoginBackgroundTask {
     public void register(UserRegister userRegister){
         try {
             restClient.setHeader("X-Dreamfactory-Application-Name", "aib-android");
-            User user = restClient.register(userRegister);
+            User user = restClient.register(userRegister);//inna klasa do rejestracji
             publishLoginResult(user, userRegister.password);
         }catch(Exception e){
             publishError(e);

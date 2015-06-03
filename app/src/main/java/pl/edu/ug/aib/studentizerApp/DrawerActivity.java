@@ -5,12 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.androidannotations.annotations.AfterViews;
@@ -18,11 +14,8 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.NonConfigurationInstance;
-import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.sharedpreferences.Pref;
-
-import java.util.List;
 
 import pl.edu.ug.aib.studentizerApp.Wallet.data.Transaction;
 import pl.edu.ug.aib.studentizerApp.Wallet.data.Wallet;
@@ -228,12 +221,12 @@ public class DrawerActivity extends ActionBarActivity implements TimetableFragme
     @NonConfigurationInstance
     RestWalletBackgroundTask restWalletBackgroundTask;
 
-       public void updateWallet(User user){
-        restBackgroundTask.getWallet(user);
+       public void updateWallet(){
+        restBackgroundTask.getWallet();
     }
 
-    public void addTransaction(User user, Transaction transaction){
-        restWalletBackgroundTask.addWalletEntry(user, transaction);
+    public void addTransaction(Transaction transaction){
+        restWalletBackgroundTask.addWalletEntry(transaction);
     }
 
     public void showErrorUpdate(Exception e){
@@ -241,11 +234,11 @@ public class DrawerActivity extends ActionBarActivity implements TimetableFragme
         e.printStackTrace(); //debug
     }
 
-    public void updateSucess(Wallet wallet){
+    public void updateSuccess(Wallet wallet){
         WalletFragment walletFragment = (WalletFragment) drawerHandler.getFragment();
 
         if(walletFragment != null){
-            walletFragment.update(wallet);
+            walletFragment.updateSuccess(wallet);
         }
     }
 

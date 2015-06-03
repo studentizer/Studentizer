@@ -2,7 +2,6 @@ package pl.edu.ug.aib.studentizerApp.fragment;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,10 +17,10 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.Extra;
-import org.androidannotations.annotations.NonConfigurationInstance;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,24 +29,28 @@ import pl.edu.ug.aib.studentizerApp.R;
 import pl.edu.ug.aib.studentizerApp.Wallet.adapter.Adapter;
 import pl.edu.ug.aib.studentizerApp.Wallet.data.Transaction;
 import pl.edu.ug.aib.studentizerApp.Wallet.data.Wallet;
-import pl.edu.ug.aib.studentizerApp.userData.Data.EmailAndPassword;
 import pl.edu.ug.aib.studentizerApp.userData.Data.User;
+import pl.edu.ug.aib.studentizerApp.userData.UserPreferences_;
 
 @EFragment(R.layout.fragment_wallet)
 public class WalletFragment extends Fragment {
 
-    BgTask mCallback; //call back from DrawerActivity
-    Fragment fragment;
+    @Pref
+    UserPreferences_ preferences;
 
     User user;
 
     Wallet wallet;
 
+    BgTask mCallback; //call back from DrawerActivity
+    Fragment fragment;
+
+    Transaction transaction;
+
     //Container activity must implement that interface
     public interface BgTask{
-        public void updateWallet(User user);
-        public void addTransaction(User user, Transaction transaction);
-        public User getUser();
+        public void updateWallet();
+        public void addTransaction(Transaction transaction);
     }
 
     @Override
@@ -72,14 +75,13 @@ public class WalletFragment extends Fragment {
     @AfterViews
     void init() {
         getActivity().setTitle(R.string.title_wallet);
-        mCallback.getUser();
         lista = new ArrayList<Transaction>();
         adapter.setList(lista);
         listaoperacji.setAdapter(adapter);
         ringProgressDialog = new ProgressDialog(getActivity());
-        ringProgressDialog.setMessage("£adowanie listy transakcji...");
+        ringProgressDialog.setMessage(String.valueOf(R.string.walletLoad));
         ringProgressDialog.setIndeterminate(true);
-        mCallback.updateWallet(user);
+        mCallback.updateWallet();
     }
 
     @ViewById
@@ -107,7 +109,7 @@ public class WalletFragment extends Fragment {
 
     private List<Transaction> lista;
 
-    public void update(Wallet wallet) {
+    public void updateSuccess(Wallet wallet) {
         ringProgressDialog.dismiss();
         Collections.reverse(lista);
         adapter.update(wallet);
@@ -119,7 +121,8 @@ public class WalletFragment extends Fragment {
                 saldo += transaction.wartosc_transakcji;
             }
         }
-        srodki.setText(saldo + " z³");
+        DecimalFormat df = new DecimalFormat("#.00");
+        srodki.setText(df.format(saldo) + " PLN");
     }
 
     public void showErrorUpdate(Exception e) {
@@ -131,23 +134,30 @@ public class WalletFragment extends Fragment {
     @Click(R.id.add)//cos nie dziala, sprawdzic
     void addClicked() {
         ringProgressDialog.show();
+        ringProgressDialog.setMessage(String.valueOf(R.string.walletLoad));
+        ringProgressDialog.setIndeterminate(true);
+        Transaction transaction = new Transaction();
+        transaction.ownerId = preferences.id().get();
+        transaction.nazwa_transakcji = nazwa_transakcji.getText().toString();
+        transaction.data_transakcji = data_transakcji.getText().toString();
+        transaction.wartosc_transakcji = Double.parseDouble(wartosc_transakcji.getText().toString());
 
-            Transaction transaction = new Transaction();
-            transaction.ownerId = user.id;
-            transaction.nazwa_transakcji = nazwa_transakcji.getText().toString();
-            transaction.data_transakcji = data_transakcji.getText().toString();
-            transaction.wartosc_transakcji = Double.parseDouble(wartosc_transakcji.getText().toString());
-
-            if ((nazwa_transakcji.length() == 0) || (wartosc_transakcji.length() == 0) || (data_transakcji.length() == 0)) {
-                ringProgressDialog.dismiss();
-                Toast.makeText(getActivity(), "Wype³nij wszystkie pola!", Toast.LENGTH_LONG).show();
-            } else {
-                mCallback.addTransaction(user, transaction);
+        if ((nazwa_transakcji.toString().isEmpty()) || (wartosc_transakcji.length() == 0)) {
+            ringProgressDialog.dismiss();
+            Toast.makeText(getActivity(), R.string.missFields, Toast.LENGTH_LONG).show();}
+            else{
+                if (preferences.sessionId().get().isEmpty()) {
+                    ringProgressDialog.dismiss();
+                    Toast.makeText(getActivity(), R.string.error, Toast.LENGTH_LONG).show();
+                }
+                else {
+                    mCallback.addTransaction(transaction);
+                }
             }
         }
     public void addSuccess(Transaction transaction) {
         ringProgressDialog.dismiss();
-        Toast.makeText(getActivity(), "Dodano transakcjê!", Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), R.string.walletAddOk, Toast.LENGTH_LONG).show();
+        mCallback.updateWallet();
     }
-
 }
