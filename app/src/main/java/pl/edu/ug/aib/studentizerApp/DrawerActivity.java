@@ -16,20 +16,32 @@ import android.widget.Toast;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.NonConfigurationInstance;
+import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.OptionsItem;
 
 import java.util.List;
 
+import pl.edu.ug.aib.studentizerApp.Wallet.data.Transaction;
+import pl.edu.ug.aib.studentizerApp.Wallet.data.Wallet;
+import pl.edu.ug.aib.studentizerApp.Wallet.restBackgroundTasks.RestBackgroundTask;
+import pl.edu.ug.aib.studentizerApp.Wallet.restBackgroundTasks.RestWalletBackgroundTask;
 import pl.edu.ug.aib.studentizerApp.fragment.DashboardFragment;
 import pl.edu.ug.aib.studentizerApp.fragment.TimetableFragment;
+import pl.edu.ug.aib.studentizerApp.fragment.WalletFragment;
 import pl.edu.ug.aib.studentizerApp.navigationDrawer.DrawerHandler;
 import pl.edu.ug.aib.studentizerApp.skmTimetable.backgroundTasks.RestBackgroundTrainLeft;
 import pl.edu.ug.aib.studentizerApp.skmTimetable.backgroundTasks.RestBackgroundTrainRight;
 import pl.edu.ug.aib.studentizerApp.skmTimetable.data.TrainsList;
+import pl.edu.ug.aib.studentizerApp.userData.Data.User;
 
 @EActivity(R.layout.activity_drawer)
-public class DrawerActivity extends ActionBarActivity implements TimetableFragment.BgTask {
+public class DrawerActivity extends ActionBarActivity implements TimetableFragment.BgTask, WalletFragment.BgTask {
+
+    @Extra("User")
+    User user;
+
     Fragment fragment;
     //region implement the Background Task interface
 
@@ -200,4 +212,55 @@ public class DrawerActivity extends ActionBarActivity implements TimetableFragme
 
     //endregion
 
+    //wallet methods
+    @Bean
+    @NonConfigurationInstance
+    RestBackgroundTask restBackgroundTask;
+
+    @Bean
+    @NonConfigurationInstance
+    RestWalletBackgroundTask restWalletBackgroundTask;
+
+    public void updateWallet(User user){
+        restBackgroundTask.getWallet(user);
+    }
+
+    public void addTransaction(User user, Transaction transaction){
+        restWalletBackgroundTask.addWalletEntry(user, transaction);
+    }
+
+    public void showErrorUpdate(Exception e){
+        Toast.makeText(getApplicationContext(), "Błąd", Toast.LENGTH_SHORT).show();
+        e.printStackTrace(); //debug
+    }
+
+    public void updateSucess(Wallet wallet){
+        WalletFragment walletFragment = (WalletFragment) drawerHandler.getFragment();
+
+        if(walletFragment != null){
+            walletFragment.update(wallet);
+        }
+    }
+
+    public void addSuccess(Transaction transaction){
+        //TODO: use try...catch
+        WalletFragment walletFragment = (WalletFragment) drawerHandler.getFragment();
+
+        if(walletFragment != null){
+            walletFragment.addSuccess(transaction);
+        }
+    }
+
+    public void showErrorAdd(Exception e){
+        Toast.makeText(getApplicationContext(), "Błąd", Toast.LENGTH_SHORT).show();
+        e.printStackTrace(); //debug
+    }
+
+    //get user
+    @OnActivityResult(1)
+    protected void onActivityResult(int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            user = (User)data.getSerializableExtra("user");
+        }
+    }
 }

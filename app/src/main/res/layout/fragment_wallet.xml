@@ -1,24 +1,94 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-
     <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin">
 
-        <TextView
-            android:id="@+id/text"
+        <LinearLayout
+            android:id="@+id/info"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="Tutaj będzie portfel"
-            />
+            android:layout_marginBottom="5sp">
+            <TextView
+                android:id="@+id/tekstsrodki"
+                android:text="Twój stan konta wynosi:"
+                android:layout_width="0sp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.75"
+                android:textStyle="bold"
+                android:textSize="20sp" />
+            <TextView
+                android:id="@+id/srodki"
+                android:text=""
+                android:layout_width="0sp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:textStyle="bold"
+                android:textSize="16sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginBottom="5sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/dodaj"
+            android:layout_below="@+id/info">
+            <EditText
+                android:id="@+id/nazwa_transakcji"
+                android:layout_width="0sp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:hint="Nazwa transakcji"
+                />
+            <EditText
+                android:id="@+id/wartosc_transakcji"
+                android:layout_width="0sp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:hint="Wartość transakcji (+/-)"
+                android:inputType="numberDecimal|numberSigned"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/dodaj2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dodaj">
+
+            <EditText
+                android:id="@+id/data_transakcji"
+                android:layout_width="0sp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:hint="Data transakcji"
+                android:inputType="date"
+                />
+            <Button
+                android:id="@+id/add"
+                android:layout_width="0sp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="Dodaj transakcję"
+                android:layout_marginBottom="5sp"/>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/listatekst"
+            android:text="Lista transakcji:"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dodaj2"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_marginBottom="5sp"/>
+        <ListView
+            android:id="@+id/listaoperacji"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_below="@id/listatekst"
+            android:fastScrollEnabled="true"
+            android:scrollingCache="true" />
 
     </RelativeLayout>
 
-</ScrollView>

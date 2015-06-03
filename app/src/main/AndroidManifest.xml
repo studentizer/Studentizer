@@ -36,6 +36,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".FragmentActivity_" />
+        <activity android:name=".UserActivity_" />
         <!--<activity android:name=".DrawerActivity_" />-->
 
     </application>

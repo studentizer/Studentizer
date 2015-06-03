@@ -1,27 +1,41 @@
 package pl.edu.ug.aib.studentizerApp.fragment;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 import org.w3c.dom.Text;
 
 import pl.edu.ug.aib.studentizerApp.R;
+import pl.edu.ug.aib.studentizerApp.UserActivity;
+import pl.edu.ug.aib.studentizerApp.UserActivity_;
 import pl.edu.ug.aib.studentizerApp.skmTimetable.gps.GeolocationService;
 import pl.edu.ug.aib.studentizerApp.skmTimetable.gps.GeolocationUtilities;
+import pl.edu.ug.aib.studentizerApp.userData.Data.User;
 
 @EFragment(R.layout.fragment_dashboard)
 public class DashboardFragment extends Fragment {
+
+    User user;
+
+    @ViewById
+    TextView hello;
+
+    @ViewById
+    Button userLogin;
 
     @ViewById(R.id.stanMiasto)
     TextView stanMiasto;
@@ -38,13 +52,21 @@ public class DashboardFragment extends Fragment {
     private double lat;
     private double lon;
 
-
     @AfterViews
     void init() {
 
         getActivity().setTitle(R.string.title_dashboard);
+        if(user==null){
+            hello.setText("Witaj nieznajomy!");
+            userLogin.setVisibility(View.VISIBLE);
+        }
 
-        locationResult = new GeolocationService.LocationResult(){
+        else {
+            hello.setText("Witaj " + user.displayName + "!");
+            userLogin.setVisibility(View.INVISIBLE);
+        }
+
+          locationResult = new GeolocationService.LocationResult(){
             @Override
             public void gotLocation(Location location){
                 //Got the location!
@@ -57,7 +79,12 @@ public class DashboardFragment extends Fragment {
 
         };
 
+    }
 
+    @Click(R.id.userLogin)//tutaj?
+    void userLoginClicked(){
+        Intent getUserData = new Intent(getActivity(), UserActivity_.class);
+        startActivityForResult(getUserData, 1);
     }
 
     //avoid app-crashing during getting the GPS location

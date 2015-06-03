@@ -7,6 +7,26 @@
     android:padding="20dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <LinearLayout
+        android:id="@+id/user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/hello"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6"
+            android:text="Witaj..."
+            android:textSize="16sp"/>
+        <Button
+            android:id="@+id/userLogin"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:text="Zaloguj się"/>
+    </LinearLayout>
+
     <RelativeLayout
         android:id="@+id/layoutRoboczy1"
         android:layout_width="fill_parent"
@@ -14,7 +34,8 @@
         android:padding="20dp"
         android:background="@drawable/tlodashboard1"
         android:layout_marginBottom="10dp"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_below="@+id/user">
 
         <AnalogClock
             android:layout_width="wrap_content"
@@ -58,7 +79,6 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"/>
 
         </LinearLayout>
-
     </RelativeLayout>
 
     <RelativeLayout
