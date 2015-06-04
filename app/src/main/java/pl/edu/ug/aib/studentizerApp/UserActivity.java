@@ -98,7 +98,7 @@ public class UserActivity extends ActionBarActivity implements UserFragment.OnUs
         preferences.displayName().put(user.displayName);
         preferences.email().put(user.email);
         preferences.password().put(password);
-        Toast.makeText(this, "Zalogowano!", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, R.string.loginOk, Toast.LENGTH_LONG).show();
         //starts main activity
         DrawerActivity_.intent(this).start();
         finish();
@@ -109,6 +109,6 @@ public class UserActivity extends ActionBarActivity implements UserFragment.OnUs
 
     }
 
-    //Zrobiæ automatyczne przejœcie do DrawerActivity je¿eli zalogowany lub poukrywaæ kilka elementów.
+    //asd
 
 }
