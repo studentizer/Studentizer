@@ -122,7 +122,7 @@ public class WalletFragment extends Fragment {
             }
         }
         DecimalFormat df = new DecimalFormat("#.00");
-        srodki.setText(df.format(saldo) + " PLN");
+        srodki.setText(df.format(saldo));
     }
 
     public void showErrorUpdate(Exception e) {
@@ -134,30 +134,43 @@ public class WalletFragment extends Fragment {
     @Click(R.id.add)//cos nie dziala, sprawdzic
     void addClicked() {
         ringProgressDialog.show();
-        ringProgressDialog.setMessage(String.valueOf(R.string.walletLoad));
+        ringProgressDialog.setMessage("Dodawanie transakcji...");
         ringProgressDialog.setIndeterminate(true);
-        Transaction transaction = new Transaction();
-        transaction.ownerId = preferences.id().get();
-        transaction.nazwa_transakcji = nazwa_transakcji.getText().toString();
-        transaction.data_transakcji = data_transakcji.getText().toString();
-        transaction.wartosc_transakcji = Double.parseDouble(wartosc_transakcji.getText().toString());
-
-        if ((nazwa_transakcji.toString().isEmpty()) || (wartosc_transakcji.length() == 0)) {
+        if ((nazwa_transakcji.toString().isEmpty()) || data_transakcji.getText().toString().isEmpty() || wartosc_transakcji.getText().toString().isEmpty()) {
             ringProgressDialog.dismiss();
-            Toast.makeText(getActivity(), R.string.missFields, Toast.LENGTH_LONG).show();}
-            else{
-                if (preferences.sessionId().get().isEmpty()) {
+            Toast.makeText(getActivity(), R.string.missFields, Toast.LENGTH_LONG).show();
+        } else {
+            Transaction transaction = new Transaction();
+            transaction.ownerId = preferences.id().get();
+            transaction.nazwa_transakcji = nazwa_transakcji.getText().toString();
+            transaction.data_transakcji = data_transakcji.getText().toString();
+            transaction.wartosc_transakcji = Double.parseDouble(wartosc_transakcji.getText().toString());
+            double saldo = Double.parseDouble(srodki.getText().toString());
+            double wartosc = Double.parseDouble(wartosc_transakcji.getText().toString());
+            if (saldo - (2 * saldo) > wartosc) {
+                ringProgressDialog.dismiss();
+                Toast.makeText(getActivity(), R.string.errorAddWallet, Toast.LENGTH_LONG).show();
+            } else {
+                if (wartosc == 0) {
                     ringProgressDialog.dismiss();
-                    Toast.makeText(getActivity(), R.string.error, Toast.LENGTH_LONG).show();
-                }
-                else {
-                    mCallback.addTransaction(transaction);
+                    Toast.makeText(getActivity(), R.string.errorAddWallet2, Toast.LENGTH_LONG).show();
+                } else {
+                    if (preferences.sessionId().get().isEmpty()) {
+                        ringProgressDialog.dismiss();
+                        Toast.makeText(getActivity(), R.string.error, Toast.LENGTH_LONG).show();
+                    } else {
+                        mCallback.addTransaction(transaction);
+                    }
                 }
             }
         }
+    }
     public void addSuccess(Transaction transaction) {
         ringProgressDialog.dismiss();
         Toast.makeText(getActivity(), R.string.walletAddOk, Toast.LENGTH_LONG).show();
         mCallback.updateWallet();
-    }
+        nazwa_transakcji.setText("");
+        data_transakcji.setText("");
+        wartosc_transakcji.setText("");
+    };
 }
