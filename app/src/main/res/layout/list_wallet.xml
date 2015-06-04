@@ -38,7 +38,8 @@
             android:layout_weight="0.3"
             android:text="15500,00 zł"
             android:textSize="16dp"
-            />
+            android:layout_gravity="center|right"
+            android:gravity="right" />
         </LinearLayout>
     <TextView
         android:id="@+id/data_transakcji"
