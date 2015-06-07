@@ -2,34 +2,32 @@ package pl.edu.ug.aib.studentizerApp.fragment;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
-import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 import pl.edu.ug.aib.studentizerApp.R;
-import pl.edu.ug.aib.studentizerApp.UserActivity;
-import pl.edu.ug.aib.studentizerApp.UserActivity_;
-import pl.edu.ug.aib.studentizerApp.Wallet.data.Transaction;
 import pl.edu.ug.aib.studentizerApp.skmTimetable.gps.GeolocationService;
-import pl.edu.ug.aib.studentizerApp.skmTimetable.gps.GeolocationUtilities;
-import pl.edu.ug.aib.studentizerApp.userData.Data.EmailAndPassword;
 import pl.edu.ug.aib.studentizerApp.userData.Data.User;
-import pl.edu.ug.aib.studentizerApp.userData.UserPreferences;
 import pl.edu.ug.aib.studentizerApp.userData.UserPreferences_;
 
 @EFragment(R.layout.fragment_dashboard)
@@ -54,11 +52,12 @@ public class DashboardFragment extends Fragment {
     @ViewById(R.id.stanC)
     TextView stanC;
 
-    //they have to be here (used also in overridden onPause method)
+        //they have to be here (used also in overridden onPause method)
     GeolocationService geolocationService = new GeolocationService();
     GeolocationService.LocationResult locationResult;
     private double lat;
     private double lon;
+
 
     @AfterViews
     void init() {
@@ -125,5 +124,8 @@ public class DashboardFragment extends Fragment {
 
     public interface OnDashboardFragmentCommunicationListener {
         public User getUser();
+    }
+
+    private class TimeFormat {
     }
 }

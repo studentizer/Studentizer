@@ -32,11 +32,11 @@ public class DrawerListAdapter extends BaseAdapter {
         items.clear();
 
         //Dodawanie do Drawera listy fragmentów
-        items.add(new DrawerItem(R.string.title_dashboard, R.drawable.icon_home, DashboardFragment_.class));
-        items.add(new DrawerItem(R.string.title_timetable, R.drawable.ic_directions_transit_white_24dp, TimetableFragment_.class));
-        items.add(new DrawerItem(R.string.title_todo, R.drawable.icon_about, TODOFragment_.class));
+        items.add(new DrawerItem(R.string.title_dashboard, R.drawable.info_grey, DashboardFragment_.class));
+        items.add(new DrawerItem(R.string.title_timetable, R.drawable.train_grey, TimetableFragment_.class));
+        items.add(new DrawerItem(R.string.title_todo, R.drawable.note_grey, TODOFragment_.class));
         items.add(new DrawerItem(R.string.title_wallet, R.drawable.wallet_grey, WalletFragment_.class));
-        items.add(new DrawerItem(R.string.title_logout, R.drawable.icon_home, LogoutFragment_.class));
+        items.add(new DrawerItem(R.string.title_logout, R.drawable.account_circle_grey, LogoutFragment_.class));
     }
 
 

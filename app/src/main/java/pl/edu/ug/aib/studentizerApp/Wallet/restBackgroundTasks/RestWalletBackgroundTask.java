@@ -47,5 +47,4 @@ public class RestWalletBackgroundTask {
     void publishError(Exception e) {
         activity.showErrorAdd(e);
     }
-
 }

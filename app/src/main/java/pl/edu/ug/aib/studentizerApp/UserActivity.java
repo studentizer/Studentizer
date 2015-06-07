@@ -1,5 +1,7 @@
 package pl.edu.ug.aib.studentizerApp;
 
+import android.app.Activity;
+import android.content.res.Resources;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.widget.EditText;
@@ -32,7 +34,7 @@ import pl.edu.ug.aib.studentizerApp.userData.UserPreferences_;
 @EActivity(R.layout.activity_user)
 public class UserActivity extends ActionBarActivity implements UserFragment.OnUserFragmentCommunicationListener,
         LoginFragment.OnLoginFragmentCommunicationListener,
-        RegisterFragment.OnRegisterFragmentCommunicationListener {
+        RegisterFragment.OnRegisterFragmentCommunicationListener{
 
     private static final String INTRO_FRAGMENT_TAG = "user";
     @Pref
@@ -110,5 +112,4 @@ public class UserActivity extends ActionBarActivity implements UserFragment.OnUs
     }
 
     //asd
-
 }

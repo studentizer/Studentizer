@@ -3,56 +3,105 @@
 <RelativeLayout
     android:id="@+id/layoutMain"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:padding="20dp"
+    android:layout_height="fill_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
+    <RelativeLayout
+        android:background="#1565c0"
         android:id="@+id/user"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="10sp"
+        android:paddingTop="10sp"
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp">
+
+        <ImageView
+            android:id="@+id/userIcon"
+            android:backgroundTint="#ffffff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/account_circle_grey"
+            android:layout_marginRight="10sp"/>
 
         <TextView
             android:id="@+id/hello"
-            android:layout_width="0sp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.6"
             android:text="Witaj..."
-            android:textSize="16sp"/>
-    </LinearLayout>
+            android:layout_toRightOf="@+id/userIcon"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF" />
+        <TextView
+            android:id="@+id/logInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Potrzebne informacje są tutaj."
+            android:layout_toRightOf="@+id/userIcon"
+            android:layout_below="@+id/hello"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF" />
+    </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/layoutRoboczy1"
+        android:id="@+id/czasPogoda"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:background="@drawable/tlodashboard1"
-        android:layout_marginBottom="10dp"
-        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:paddingBottom="10sp"
+        android:paddingTop="10sp"
+        android:background="#f44336"
         android:layout_below="@+id/user">
 
-        <AnalogClock
+        <TextClock
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/txtClock"
-            android:textSize="50dp"
+            android:id="@+id/textClock"
             android:layout_centerHorizontal="true"
-            android:format24Hour="true" />
+            android:textSize="50sp"
+            android:textColor="#ffffff"
+            android:timeZone="GMT+2"
+            android:format12Hour="HH:mm"/>
+
+        <TextClock
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textClock2"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/textClock"
+            android:textSize="20sp"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:format12Hour="EEEE, dd MMMM yyyy"/>
+
+        <TextView
+            android:id="@+id/dataDzien"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textClock"
+            android:text=""
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="#ffffff"/>
 
         <TextView
             android:id="@+id/stanMiasto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Miasto"
             android:textAllCaps="true"
-            android:textStyle="bold"/>
+            android:layout_below="@id/dataDzien"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:paddingLeft="10sp"
+                />
 
         <LinearLayout
             android:id="@+id/linearPogoda"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/stanMiasto">
+            android:layout_below="@id/stanMiasto"
+            android:paddingLeft="10sp"
+            android:paddingRight="10sp">
 
             <TextView
                 android:id="@+id/stanPogoda"
@@ -61,7 +110,8 @@
                 android:layout_weight="0.8"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="pogoda" />
+                android:text="stanPogody"
+                android:textColor="#ffffff"/>
 
             <TextView
                 android:id="@+id/stanC"
@@ -70,71 +120,98 @@
                 android:layout_width="0dp"
                 android:layout_weight="0.2"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"/>
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:gravity="right"
+                android:textColor="#ffffff"
+                android:paddingRight="10sp"/>
 
         </LinearLayout>
+
+
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/layoutRoboczy2"
+        android:id="@+id/todoInfo"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="30dp"
-        android:background="@drawable/tlodashboard2"
-        android:layout_below="@id/layoutRoboczy1"
-        android:layout_marginBottom="10dp"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        android:paddingBottom="10sp"
+        android:paddingTop="10sp"
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp"
+        android:background="#009688"
+        android:layout_below="@id/czasPogoda"
+       >
 
         <TextView
             android:id="@+id/zadanieTODO"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Zadanie"
-            android:textAllCaps="true"
-            android:textStyle="bold"/>
+            android:text="Twoje najbliższe zadanie do zrobienia:"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="4sp"/>
+
+        <ImageView
+            android:id="@+id/todoIcon"
+            android:backgroundTint="#ffffff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/info_grey"
+            android:layout_below="@id/zadanieTODO"
+            android:layout_marginRight="10sp"/>
 
         <TextView
             android:text="Nazwa"
             android:id="@+id/txtNazwa"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_below="@+id/zadanieTODO"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <TextView
-            android:text="Patryk"
-            android:id="@+id/txtData"
-            android:layout_width="wrap_content"
+            android:layout_toRightOf="@+id/todoIcon"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF"
+             />
+        <LinearLayout
+            android:id="@+id/MiejsceData"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_below="@id/txtNazwa"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_toRightOf="@+id/todoIcon">
+            <TextView
+                android:id="@+id/textMiejsce"
+                android:text="Miejsce"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:textSize="20sp"
+                android:textColor="#FFFFFF"
+                 />
 
-        <TextView
-            android:id="@+id/textMiejsce"
-            android:text="Justyna #ladnapani"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_below="@+id/txtNazwa"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            <TextView
+                android:text="Data"
+                android:id="@+id/txtData"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:textSize="20sp"
+                android:textColor="#FFFFFF"
+                android:gravity="right"/>
+            </LinearLayout>
+
+
 
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/layoutRoboczy3"
+        android:id="@+id/saldoInfo"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="35dp"
-        android:background="@drawable/tlodashboard3"
-        android:layout_below="@id/layoutRoboczy2"
-        android:layout_marginBottom="10dp"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        android:paddingBottom="10sp"
+        android:paddingTop="10sp"
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp"
+        android:background="#ffeb3b"
+        android:layout_below="@id/todoInfo">
 
         <TextView
             android:id="@+id/saldo"
