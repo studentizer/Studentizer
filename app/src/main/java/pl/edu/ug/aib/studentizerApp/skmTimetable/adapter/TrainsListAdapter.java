@@ -59,9 +59,9 @@ public class TrainsListAdapter  extends BaseAdapter {
         }
 
         if(position % 2 == 0) {
-            trainItemView.setBackgroundColor(Color.parseColor("#E3F2FD"));
+            trainItemView.setBackgroundColor(Color.parseColor("#9E9E9E"));
         } else{
-            trainItemView.setBackgroundColor(Color.WHITE);
+            trainItemView.setBackgroundColor(Color.parseColor("#424242"));
         }
 
 
