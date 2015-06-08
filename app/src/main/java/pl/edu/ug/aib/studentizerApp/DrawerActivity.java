@@ -221,7 +221,7 @@ public class DrawerActivity extends ActionBarActivity implements TimetableFragme
     @NonConfigurationInstance
     RestWalletBackgroundTask restWalletBackgroundTask;
 
-       public void updateWallet(){
+          public void updateWallet(){
         restBackgroundTask.getWallet();
     }
 
@@ -251,7 +251,7 @@ public class DrawerActivity extends ActionBarActivity implements TimetableFragme
         }
     }
 
-    public void showErrorAdd(Exception e){
+        public void showErrorAdd(Exception e){
         Toast.makeText(getApplicationContext(), "Błąd", Toast.LENGTH_SHORT).show();
         e.printStackTrace(); //debug
     }

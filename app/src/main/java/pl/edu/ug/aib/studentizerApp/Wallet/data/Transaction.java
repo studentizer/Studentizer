@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
+import java.sql.Date;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Transaction implements Serializable, Comparable<Transaction>{
@@ -24,10 +25,10 @@ public class Transaction implements Serializable, Comparable<Transaction>{
     @Override
     public int compareTo(Transaction transaction) {
 
-        if(id_transakcji > transaction.id_transakcji){
+        if(Date.valueOf(data_transakcji).after(Date.valueOf(transaction.data_transakcji))){
             return -1;
         }
-        else if(id_transakcji == transaction.id_transakcji){
+        else if(Date.valueOf(data_transakcji).equals(Date.valueOf(transaction.data_transakcji))){
             return 0;
 
         }

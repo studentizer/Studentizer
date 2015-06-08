@@ -41,6 +41,7 @@
     <string name="loginOk">Zalogowano!</string>
     <string name="errorAddWallet">Nie możesz wydać więcej pieniędzy niż posiadasz!</string>
     <string name="errorAddWallet2">Wartość transakcji musi być różna od 0!</string>
+    <string name="walletDeleteOk">Usunięto transakcję!</string>
 
     <!--Trzeba podmienić facebook_app_id-->
     <!--Najpierw trzeba wygenerowac apliakcje na FB. Stamtad bedzie mozna przekleic jej numer-->

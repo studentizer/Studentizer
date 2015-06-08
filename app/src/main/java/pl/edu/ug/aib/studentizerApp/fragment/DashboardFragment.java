@@ -140,6 +140,4 @@ public class DashboardFragment extends Fragment {
         public User getUser();
     }
 
-    private class TimeFormat {
-    }
 }

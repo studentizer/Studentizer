@@ -33,4 +33,5 @@ public interface WalletRestClient extends RestClientHeaders {
 
     @Delete("/user/session")
     UserLogout logout();
+
 }

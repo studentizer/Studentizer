@@ -17,6 +17,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ItemLongClick;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
@@ -178,7 +179,6 @@ public class WalletFragment extends Fragment {
         nazwa_transakcji.setText("");
         data_transakcji.setText("");
         wartosc_transakcji.setText("");
-    };
-
+    }
 
 }
