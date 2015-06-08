@@ -36,7 +36,7 @@
             android:id="@+id/logInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Potrzebne informacje są tutaj."
+            android:text="Oto Twój panel aplikacji"
             android:layout_toRightOf="@+id/userIcon"
             android:layout_below="@+id/hello"
             android:textSize="20sp"
@@ -93,6 +93,7 @@
             android:textStyle="bold"
             android:textColor="#ffffff"
             android:paddingLeft="10sp"
+            android:textSize="20sp"
                 />
 
         <LinearLayout
@@ -109,20 +110,20 @@
                 android:layout_width="0dp"
                 android:layout_weight="0.8"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="stanPogody"
-                android:textColor="#ffffff"/>
+                android:textColor="#ffffff"
+                android:textSize="20sp"/>
 
             <TextView
                 android:id="@+id/stanC"
-                android:text="PIEKŁO"
+                android:text="Temp."
                 android:layout_alignParentRight ="true"
                 android:layout_width="0dp"
                 android:layout_weight="0.2"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:gravity="right"
                 android:textColor="#ffffff"
+                android:textSize="20sp"
                 android:paddingRight="10sp"/>
 
         </LinearLayout>
@@ -210,27 +211,46 @@
         android:paddingTop="10sp"
         android:paddingLeft="10sp"
         android:paddingRight="10sp"
-        android:background="#ffeb3b"
+        android:background="#795548"
         android:layout_below="@id/todoInfo">
 
         <TextView
+            android:id="@+id/portfeltxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Twoje finanse:"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"/>
+
+        <ImageView
+            android:id="@+id/portfelIcon"
+            android:backgroundTint="#ffffff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/wallet_grey"
+            android:layout_marginRight="10sp"
+            android:layout_below="@+id/portfeltxt"/>
+
+        <TextView
+            android:id="@+id/saldotxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Obecnie posiadasz:"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF"
+            android:layout_below="@id/portfeltxt"
+            android:layout_toRightOf="@+id/portfelIcon"/>
+
+        <TextView
+            android:text="1680 zł"
             android:id="@+id/saldo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Saldo"
-            android:textAllCaps="true"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:text="Liczba"
-            android:id="@+id/txtLiczba"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_below="@+id/saldo"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:textSize="20sp"
+            android:textColor="#FFFFFF"
+            android:layout_below="@id/saldotxt"
+            android:layout_toRightOf="@+id/portfelIcon" />
 
     </RelativeLayout>
 
