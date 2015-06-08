@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +21,17 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 import pl.edu.ug.aib.studentizerApp.R;
+import pl.edu.ug.aib.studentizerApp.Wallet.data.Transaction;
+import pl.edu.ug.aib.studentizerApp.Wallet.data.Wallet;
 import pl.edu.ug.aib.studentizerApp.skmTimetable.gps.GeolocationService;
 import pl.edu.ug.aib.studentizerApp.userData.Data.User;
 import pl.edu.ug.aib.studentizerApp.userData.UserPreferences_;
@@ -33,7 +39,13 @@ import pl.edu.ug.aib.studentizerApp.userData.UserPreferences_;
 @EFragment(R.layout.fragment_dashboard)
 public class DashboardFragment extends Fragment {
 
+    FragmentManager fragmentManager;
+
     OnDashboardFragmentCommunicationListener listener;
+
+    Transaction transaction;
+
+    Wallet wallet;
 
     @Pref
     UserPreferences_ preferences;
@@ -53,13 +65,14 @@ public class DashboardFragment extends Fragment {
     TextView stanC;
 
     @ViewById(R.id.saldo)
-            TextView saldo;
+    TextView saldo;
 
         //they have to be here (used also in overridden onPause method)
     GeolocationService geolocationService = new GeolocationService();
     GeolocationService.LocationResult locationResult;
     private double lat;
     private double lon;
+    private FragmentManager supportFragmentManager;
 
 
     @AfterViews
@@ -67,17 +80,17 @@ public class DashboardFragment extends Fragment {
         getActivity().setTitle(R.string.title_dashboard);
         listener.getUser();
         getUserInfo();
+
         preferences.saldokonta().get();
-        if(preferences.saldokonta().get().isEmpty()){
+        if (preferences.saldokonta().get().isEmpty()) {
             saldo.setText("0zł");
-        }
-        else {
-            saldo.setText(preferences.saldokonta().get().toString()+"zł");
+        } else {
+            saldo.setText(preferences.saldokonta().get().toString() + "zł");
         }
 
-          locationResult = new GeolocationService.LocationResult(){
+        locationResult = new GeolocationService.LocationResult() {
             @Override
-            public void gotLocation(Location location){
+            public void gotLocation(Location location) {
                 //Got the location!
                 lat = location.getLatitude();
                 lon = location.getLongitude();
@@ -87,8 +100,8 @@ public class DashboardFragment extends Fragment {
             }
 
         };
-
     }
+
 
     public void getUserInfo(){
         if (preferences.sessionId().get().isEmpty()) {
@@ -130,6 +143,10 @@ public class DashboardFragment extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         return inflater.inflate(R.layout.fragment_dashboard, container, false);
+    }
+
+    public FragmentManager getSupportFragmentManager() {
+        return supportFragmentManager;
     }
 
     public interface OnDashboardFragmentCommunicationListener {

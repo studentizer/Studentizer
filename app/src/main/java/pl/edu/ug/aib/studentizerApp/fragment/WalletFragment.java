@@ -179,4 +179,6 @@ public class WalletFragment extends Fragment {
         data_transakcji.setText("");
         wartosc_transakcji.setText("");
     };
+
+
 }

@@ -24,4 +24,8 @@ public interface UserPreferences {
     String password();
     @DefaultString("")
     String saldokonta();
+    @DefaultString("")
+    String przychody();
+    @DefaultString("")
+    String koszty();
 }
