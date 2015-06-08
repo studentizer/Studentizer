@@ -69,8 +69,8 @@ public class DashboardFragment extends Fragment {
         getUserInfo();
 
         preferences.saldokonta().get();
-        if (preferences.saldokonta().get().isEmpty()) {
-            saldo.setText("0zł");
+        if (preferences.saldokonta().get().isEmpty()||preferences.saldokonta().get().equals(".00")) {
+            saldo.setText("0.00zł");
         } else {
             saldo.setText(preferences.saldokonta().get().toString() + "zł");
         }

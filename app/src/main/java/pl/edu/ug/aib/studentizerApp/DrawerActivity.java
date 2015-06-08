@@ -272,6 +272,7 @@ public class DrawerActivity extends ActionBarActivity implements TimetableFragme
             preferences.firstName().put("");
             preferences.lastName().put("");
             preferences.displayName().put("");
+            preferences.saldokonta().put("");
             Toast.makeText(this, "Wylogowano!", Toast.LENGTH_LONG).show();
             UserActivity_.intent(this).start();
             finish();
