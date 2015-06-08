@@ -22,4 +22,6 @@ public interface UserPreferences {
     String email();
     @DefaultString("")
     String password();
+    @DefaultString("")
+    String saldokonta();
 }

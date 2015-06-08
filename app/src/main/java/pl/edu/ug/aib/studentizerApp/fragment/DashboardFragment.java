@@ -52,6 +52,9 @@ public class DashboardFragment extends Fragment {
     @ViewById(R.id.stanC)
     TextView stanC;
 
+    @ViewById(R.id.saldo)
+            TextView saldo;
+
         //they have to be here (used also in overridden onPause method)
     GeolocationService geolocationService = new GeolocationService();
     GeolocationService.LocationResult locationResult;
@@ -64,6 +67,13 @@ public class DashboardFragment extends Fragment {
         getActivity().setTitle(R.string.title_dashboard);
         listener.getUser();
         getUserInfo();
+        preferences.saldokonta().get();
+        if(preferences.saldokonta().get().isEmpty()){
+            saldo.setText("0zł");
+        }
+        else {
+            saldo.setText(preferences.saldokonta().get().toString()+"zł");
+        }
 
           locationResult = new GeolocationService.LocationResult(){
             @Override

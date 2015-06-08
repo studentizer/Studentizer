@@ -128,6 +128,7 @@ public class WalletFragment extends Fragment {
         }
         DecimalFormat df = new DecimalFormat("#.00");
         srodki.setText(df.format(saldo));
+        preferences.saldokonta().put(srodki.getText().toString());
     }
 
     public void showErrorUpdate(Exception e) {

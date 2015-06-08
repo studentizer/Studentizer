@@ -7,7 +7,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
-        android:background="#1565c0"
+        android:background="#f44336"
         android:id="@+id/user"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:paddingBottom="10sp"
         android:paddingTop="10sp"
-        android:background="#f44336"
+        android:background="#1565c0"
         android:layout_below="@+id/user">
 
         <TextClock
@@ -139,7 +139,7 @@
         android:paddingTop="10sp"
         android:paddingLeft="10sp"
         android:paddingRight="10sp"
-        android:background="#009688"
+        android:background="#ff9800"
         android:layout_below="@id/czasPogoda"
        >
 
@@ -211,7 +211,7 @@
         android:paddingTop="10sp"
         android:paddingLeft="10sp"
         android:paddingRight="10sp"
-        android:background="#795548"
+        android:background="#009688"
         android:layout_below="@id/todoInfo">
 
         <TextView
