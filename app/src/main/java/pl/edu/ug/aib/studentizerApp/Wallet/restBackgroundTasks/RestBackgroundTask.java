@@ -1,7 +1,5 @@
 package pl.edu.ug.aib.studentizerApp.Wallet.restBackgroundTasks;
 
-import android.util.Log;
-
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
@@ -9,18 +7,10 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.rest.RestService;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
 import pl.edu.ug.aib.studentizerApp.DrawerActivity;
 import pl.edu.ug.aib.studentizerApp.Wallet.WalletRestClient;
-import pl.edu.ug.aib.studentizerApp.Wallet.data.Transaction;
 import pl.edu.ug.aib.studentizerApp.Wallet.data.Wallet;
-import pl.edu.ug.aib.studentizerApp.userData.Data.User;
-import pl.edu.ug.aib.studentizerApp.userData.Data.UserList;
 import pl.edu.ug.aib.studentizerApp.userData.Data.UserLogout;
-import pl.edu.ug.aib.studentizerApp.userData.UserPreferences;
 import pl.edu.ug.aib.studentizerApp.userData.UserPreferences_;
 
 @EBean

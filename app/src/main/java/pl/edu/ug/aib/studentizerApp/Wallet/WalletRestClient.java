@@ -1,7 +1,5 @@
 package pl.edu.ug.aib.studentizerApp.Wallet;
 
-import android.util.Log;
-
 import org.androidannotations.annotations.rest.Delete;
 import org.androidannotations.annotations.rest.Get;
 import org.androidannotations.annotations.rest.Post;

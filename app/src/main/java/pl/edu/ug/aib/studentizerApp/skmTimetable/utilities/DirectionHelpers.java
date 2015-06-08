@@ -1,10 +1,8 @@
 package pl.edu.ug.aib.studentizerApp.skmTimetable.utilities;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import pl.edu.ug.aib.studentizerApp.skmTimetable.data.Station;
-import pl.edu.ug.aib.studentizerApp.skmTimetable.data.StationsList;
 
 /**
  * Created by Konrad on 23.05.2015.

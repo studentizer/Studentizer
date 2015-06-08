@@ -1,19 +1,13 @@
 package pl.edu.ug.aib.studentizerApp;
 
-import android.app.Activity;
-import android.content.res.Resources;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.NonConfigurationInstance;
-import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import pl.edu.ug.aib.studentizerApp.fragment.LoginFragment;

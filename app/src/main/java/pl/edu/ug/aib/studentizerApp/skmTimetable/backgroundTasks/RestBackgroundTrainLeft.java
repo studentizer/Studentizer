@@ -7,7 +7,6 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.rest.RestService;
 
 import pl.edu.ug.aib.studentizerApp.DrawerActivity;
-import pl.edu.ug.aib.studentizerApp.fragment.TimetableFragment;
 import pl.edu.ug.aib.studentizerApp.skmTimetable.SkmRestClient;
 import pl.edu.ug.aib.studentizerApp.skmTimetable.data.TrainsList;
 

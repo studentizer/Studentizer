@@ -13,10 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pl.edu.ug.aib.studentizerApp.R;
+import pl.edu.ug.aib.studentizerApp.fragment.DashboardFragment_;
 import pl.edu.ug.aib.studentizerApp.fragment.LogoutFragment_;
 import pl.edu.ug.aib.studentizerApp.fragment.TODOFragment_;
 import pl.edu.ug.aib.studentizerApp.fragment.TimetableFragment_;
-import pl.edu.ug.aib.studentizerApp.fragment.DashboardFragment_;
 import pl.edu.ug.aib.studentizerApp.fragment.WalletFragment_;
 
 @EBean

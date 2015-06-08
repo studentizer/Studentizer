@@ -1,8 +1,6 @@
 package pl.edu.ug.aib.studentizerApp.skmTimetable.data;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Konrad on 22.05.2015.

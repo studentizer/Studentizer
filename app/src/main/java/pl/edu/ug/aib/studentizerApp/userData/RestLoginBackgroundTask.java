@@ -10,7 +10,6 @@ import pl.edu.ug.aib.studentizerApp.UserActivity;
 import pl.edu.ug.aib.studentizerApp.userData.Data.EmailAndPassword;
 import pl.edu.ug.aib.studentizerApp.userData.Data.User;
 import pl.edu.ug.aib.studentizerApp.userData.Data.UserRegister;
-import pl.edu.ug.aib.studentizerApp.userData.UserDataRestClient;
 
 @EBean
 public class RestLoginBackgroundTask {

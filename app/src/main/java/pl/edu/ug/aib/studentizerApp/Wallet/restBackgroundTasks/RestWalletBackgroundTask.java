@@ -10,8 +10,6 @@ import org.androidannotations.annotations.sharedpreferences.Pref;
 import pl.edu.ug.aib.studentizerApp.DrawerActivity;
 import pl.edu.ug.aib.studentizerApp.Wallet.WalletRestClient;
 import pl.edu.ug.aib.studentizerApp.Wallet.data.Transaction;
-import pl.edu.ug.aib.studentizerApp.Wallet.data.Wallet;
-import pl.edu.ug.aib.studentizerApp.userData.Data.User;
 import pl.edu.ug.aib.studentizerApp.userData.UserPreferences_;
 
 @EBean

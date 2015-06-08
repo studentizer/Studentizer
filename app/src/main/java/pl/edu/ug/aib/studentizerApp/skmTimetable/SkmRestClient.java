@@ -2,8 +2,6 @@ package pl.edu.ug.aib.studentizerApp.skmTimetable;
 
 import org.androidannotations.annotations.rest.Get;
 import org.androidannotations.annotations.rest.Rest;
-import org.androidannotations.api.rest.RestClientHeaders;
-import org.json.JSONArray;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
 import pl.edu.ug.aib.studentizerApp.skmTimetable.data.TrainsList;

@@ -1,6 +1,5 @@
 package pl.edu.ug.aib.studentizerApp.userData;
 
-import org.androidannotations.annotations.rest.Delete;
 import org.androidannotations.annotations.rest.Get;
 import org.androidannotations.annotations.rest.Post;
 import org.androidannotations.annotations.rest.RequiresHeader;
@@ -10,7 +9,6 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 
 import pl.edu.ug.aib.studentizerApp.userData.Data.EmailAndPassword;
 import pl.edu.ug.aib.studentizerApp.userData.Data.User;
-import pl.edu.ug.aib.studentizerApp.userData.Data.UserList;
 import pl.edu.ug.aib.studentizerApp.userData.Data.UserRegister;
 
 
