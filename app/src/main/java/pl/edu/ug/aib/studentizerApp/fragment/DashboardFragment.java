@@ -37,15 +37,15 @@ public class DashboardFragment extends Fragment {
     Transaction transaction;
 
     Wallet wallet;
-//    DatabaseHandler dbHandler;
+    DatabaseHandler dbHandler;
     @Pref
     UserPreferences_ preferences;
-//    @ViewById
-//    TextView txtNazwa;
-//    @ViewById
-//    TextView textMiejsce;
-//    @ViewById
-//    TextView MiejsceData;
+    @ViewById
+    TextView txtNazwa;
+    @ViewById
+    TextView textMiejsce;
+    @ViewById
+    TextView txtData;
     User user;
 
     @ViewById
@@ -96,24 +96,26 @@ public class DashboardFragment extends Fragment {
             }
 
         };
-//        dbHandler = new DatabaseHandler(getActivity());
-//        List<Task> tasks = dbHandler.getAllTasks();
-//        Task lastTask = tasks.get(tasks.size() - 1);
-//        if (txtNazwa != null || !txtNazwa.getText().equals("")) {
-//            txtNazwa.setText(lastTask.getZadanie());
-//        } else {
-//            txtNazwa.setText("Brak zadania");
-//        }
-//        if (MiejsceData != null || !MiejsceData.getText().equals("")) {
-//            MiejsceData.setText(lastTask.getData());
-//        } else {
-//            MiejsceData.setText("Brak daty");
-//        }
-//        if (textMiejsce != null || !textMiejsce.getText().equals("")) {
-//            textMiejsce.setText(lastTask.getData());
-//        } else {
-//            textMiejsce.setText("Brak daty");
-//        }
+        dbHandler = new DatabaseHandler(getActivity());
+        List<Task> tasks = dbHandler.getAllTasks();
+        if(tasks.size() != 0) {
+            Task lastTask = tasks.get(tasks.size() - 1);
+            if (lastTask.getZadanie() != null || !lastTask.getZadanie().equals("")) {
+                txtNazwa.setText(lastTask.getZadanie());
+            } else {
+                txtNazwa.setText("Brak zadania");
+            }
+            if (lastTask.getData() != null || !lastTask.getData().equals("")) {
+                txtData.setText(lastTask.getData());
+            } else {
+                txtData.setText("Brak daty");
+            }
+            if (lastTask.getAdres() != null || !lastTask.getAdres().equals("")) {
+                textMiejsce.setText(lastTask.getAdres());
+            } else {
+                textMiejsce.setText("Brak adresu");
+            }
+        }
     }
 
     public void getUserInfo(){
