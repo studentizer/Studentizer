@@ -16,10 +16,14 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
+import java.util.List;
+
 import pl.edu.ug.aib.studentizerApp.R;
 import pl.edu.ug.aib.studentizerApp.Wallet.data.Transaction;
 import pl.edu.ug.aib.studentizerApp.Wallet.data.Wallet;
 import pl.edu.ug.aib.studentizerApp.skmTimetable.gps.GeolocationService;
+import pl.edu.ug.aib.studentizerApp.todoList.DatabaseHandler;
+import pl.edu.ug.aib.studentizerApp.todoList.Task;
 import pl.edu.ug.aib.studentizerApp.userData.Data.User;
 import pl.edu.ug.aib.studentizerApp.userData.UserPreferences_;
 
@@ -33,10 +37,15 @@ public class DashboardFragment extends Fragment {
     Transaction transaction;
 
     Wallet wallet;
-
+//    DatabaseHandler dbHandler;
     @Pref
     UserPreferences_ preferences;
-
+//    @ViewById
+//    TextView txtNazwa;
+//    @ViewById
+//    TextView textMiejsce;
+//    @ViewById
+//    TextView MiejsceData;
     User user;
 
     @ViewById
@@ -69,7 +78,7 @@ public class DashboardFragment extends Fragment {
         getUserInfo();
 
         preferences.saldokonta().get();
-        if (preferences.saldokonta().get().isEmpty()||preferences.saldokonta().get().equals(".00")) {
+        if (preferences.saldokonta().get().isEmpty() || preferences.saldokonta().get().equals(".00")) {
             saldo.setText("0.00zł");
         } else {
             saldo.setText(preferences.saldokonta().get().toString() + "zł");
@@ -87,8 +96,25 @@ public class DashboardFragment extends Fragment {
             }
 
         };
+//        dbHandler = new DatabaseHandler(getActivity());
+//        List<Task> tasks = dbHandler.getAllTasks();
+//        Task lastTask = tasks.get(tasks.size() - 1);
+//        if (txtNazwa != null || !txtNazwa.getText().equals("")) {
+//            txtNazwa.setText(lastTask.getZadanie());
+//        } else {
+//            txtNazwa.setText("Brak zadania");
+//        }
+//        if (MiejsceData != null || !MiejsceData.getText().equals("")) {
+//            MiejsceData.setText(lastTask.getData());
+//        } else {
+//            MiejsceData.setText("Brak daty");
+//        }
+//        if (textMiejsce != null || !textMiejsce.getText().equals("")) {
+//            textMiejsce.setText(lastTask.getData());
+//        } else {
+//            textMiejsce.setText("Brak daty");
+//        }
     }
-
 
     public void getUserInfo(){
         if (preferences.sessionId().get().isEmpty()) {

@@ -1,24 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
-    <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TabHost
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        android:layout_height="fill_parent"
+        android:id="@+id/baner"
+        android:layout_gravity="left|center_vertical">
 
-        <TextView
-            android:id="@+id/text"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="Tutaj lista TO DO"
-            />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            >
 
-    </RelativeLayout>
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top">
+            </TabWidget>
 
-</ScrollView>
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+               >
+
+                <LinearLayout
+                    android:id="@+id/tabZadanie"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical"
+                   >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Dodaj zadanie"
+                        android:id="@+id/lblDodajZadanie"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"/>
+
+
+
+                    <EditText
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:ems="10"
+                        android:id="@+id/txtZadanie"
+                        android:layout_marginTop="20dp"
+                        android:hint="Zadanie"/>
+
+                    <EditText
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:id="@+id/txtOpis"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="15dp"
+                        android:hint="Opis"/>
+
+                    <EditText
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:id="@+id/txtData"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="15dp"
+                        android:hint="Data"
+                        android:inputType="date"/>
+
+                    <EditText
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:id="@+id/txtAdres"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="15dp"
+                        android:hint="Adres"
+                        android:inputType="textPostalAddress"/>
+
+                    <Button
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:text="Dodaj zadanie!"
+                        android:id="@+id/btnAdd"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:enabled="false"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tabListaZadan"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Moje zadania"
+                        android:id="@+id/textView"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center" />
+
+                    <ListView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/listView"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
+    </LinearLayout>

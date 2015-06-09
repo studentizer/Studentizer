@@ -119,8 +119,7 @@ public class TimetableFragment extends Fragment {
     Spinner startIdSpinner;
     @ViewById
     Spinner endIdSpinner;
-    @ViewById
-    TextView text;
+
     @ViewById
     TextView leftTxtView;
     @ViewById
